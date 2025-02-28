@@ -21,7 +21,7 @@ const createMalkhanaEntry = asyncHandler(async (req, res) => {
     caseProperty,
     actType,
     status,
-    avtar,
+    
   } = req.body;
 
   if (
@@ -39,8 +39,8 @@ const createMalkhanaEntry = asyncHandler(async (req, res) => {
     !DakhilKarneWala ||
     !caseProperty ||
     !actType ||
-    !status ||
-    !avtar
+    !status 
+   
   ) {
     throw new ApiError(400, "All fields are required");
   }

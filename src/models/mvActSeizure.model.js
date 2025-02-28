@@ -21,7 +21,7 @@ const mvActSeizureSchema = new mongoose.Schema(
             type: String,
             required: true,
             trim: true,
-            enum: ["Car", "Bike", "Truck", "Bus", "Other"] // Example options, modify as needed
+            enum: ["Car", "Bike", "Truck", "Bus", "Other"] 
         },
         regNo: {
             type: String,
