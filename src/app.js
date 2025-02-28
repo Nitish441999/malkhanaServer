@@ -8,6 +8,12 @@ import fslrouter from "./routes/fsl.Routes.js";
 import kurkiRouter from "./routes/kurki.Routes.js";
 import otherRouter from "./routes/others.Routes.js";
 import unclaimedRouter from "./routes/unclaimed.Routes.js";
+import mvActSeizureRouter from "./routes/mvActSeizure.Routes.js";
+import artoSeizureRouter from "./routes/artoSeizure.Routes.js";
+import exciseVehicleRouter from "./routes/exciseVehicle.Routes.js";
+import ipcVehicleRouter from "./routes/ipcVehicle.Routes.js";
+import seizureVehicleRouter from "./routes/seizureVehicle.Routes.js";
+import unclaimedVehicleRouter from "./routes/unclaimedVehicle.Routes.js";
 dotenv.config();
 
 const app = express();
@@ -34,6 +40,12 @@ app.use("/api/v1/fsl", fslrouter);
 app.use("/api/v1/kurki", kurkiRouter);
 app.use("/api/v1/other", otherRouter);
 app.use("/api/v1/unclaimed", unclaimedRouter);
+app.use("/api/v1/mvact", mvActSeizureRouter);
+app.use("/api/v1/artoSeizure", artoSeizureRouter);
+app.use("/api/v1/exciseVehicle", exciseVehicleRouter);
+app.use("/api/v1/ipcVehicle", ipcVehicleRouter);
+app.use("/api/v1/seizureVehicle", seizureVehicleRouter);
+app.use("/api/v1/unclaimedVehicle", unclaimedRouter);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });

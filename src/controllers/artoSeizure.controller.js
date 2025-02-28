@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import MvActSeizure from "../models/mvActSeizure.model.js";
+import ArtoSeizure from "../models/artoSeizure.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponce from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 
-const mvActSeizureEntry = asyncHandler(async (req, res) => {
+const artoSeizureEntry = asyncHandler(async (req, res) => {
   const {
     mudNo,
     gdNo,
@@ -36,7 +36,7 @@ const mvActSeizureEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await MvActSeizure.findOne({ regNo });
+  const entryExists = await ArtoSeizure.findOne({ regNo });
   if (entryExists) {
     throw new ApiError(
       400,
@@ -54,7 +54,7 @@ const mvActSeizureEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Failed to upload avatar file");
   }
 
-  const NewMvActSeizureEntry = await MvActSeizure.create({
+  const NewArtoSeizureEntry = await ArtoSeizure.create({
     mudNo,
     gdNo,
     underSection,
@@ -69,7 +69,7 @@ const mvActSeizureEntry = asyncHandler(async (req, res) => {
     avatar: avatarURL.url,
   });
 
-  if (!NewMvActSeizureEntry) {
+  if (!NewArtoSeizureEntry) {
     throw new ApiError(400, "Invalid entry data");
   }
   return res
@@ -77,19 +77,19 @@ const mvActSeizureEntry = asyncHandler(async (req, res) => {
     .json(
       new ApiResponce(
         201,
-        NewMvActSeizureEntry,
+        NewArtoSeizureEntry,
         "M.V Act Seizure Entry successful "
       )
     );
 });
 
-const getMvActSeizure = asyncHandler(async (req, res) => {
+const getArtoSeizure = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "id is inviled");
   }
 
-  const getMvctAct = await MvActSeizure.findById(id);
+  const getartoSeizure = await ArtoSeizure.findById(id);
 
   if (!getMvctAct) {
     throw new ApiError(404, "Entry not found");
@@ -97,20 +97,20 @@ const getMvActSeizure = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, getMvctAct, "Entry retrieved successfully"));
+    .json(new ApiResponce(200, getartoSeizure, "Entry retrieved successfully"));
 });
 
-const getMvActSeizureList = asyncHandler(async (req, res) => {
-  const MvActSeizureList = await MvActSeizure.find();
+const getArtoSeizureList = asyncHandler(async (req, res) => {
+  const ArtoSeizureList = await ArtoSeizure.find();
 
   return res
     .status(200)
     .json(
-      new ApiResponce(200, MvActSeizureList, "Entries retrieved successfully")
+      new ApiResponce(200, ArtoSeizureList, "Entries retrieved successfully")
     );
 });
 
-const updateMvActSeizure = asyncHandler(async (req, res) => {
+const updateArtoSeizure = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -147,7 +147,7 @@ const updateMvActSeizure = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const existingEntry = await MvActSeizure.findById(id);
+  const existingEntry = await ArtoSeizure.findById(id);
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
   }
@@ -163,7 +163,7 @@ const updateMvActSeizure = asyncHandler(async (req, res) => {
     req.body.avatar = avatarUploadResult.url;
   }
 
-  const updatedEntry = await MvActSeizure.findByIdAndUpdate(
+  const updatedEntry = await ArtoSeizure.findByIdAndUpdate(
     id,
     { $set: req.body },
     { new: true, runValidators: true }
@@ -174,8 +174,8 @@ const updateMvActSeizure = asyncHandler(async (req, res) => {
     .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
 });
 export {
-  mvActSeizureEntry,
-  getMvActSeizure,
-  getMvActSeizureList,
-  updateMvActSeizure,
+  artoSeizureEntry,
+  getArtoSeizure,
+  getArtoSeizureList,
+  updateArtoSeizure,
 };
