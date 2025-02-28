@@ -92,4 +92,4 @@ const seizureVehicleSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("seizureVehicle", ipcVehicleSchema);
+export default mongoose.model("seizureVehicle", seizureVehicleSchema);

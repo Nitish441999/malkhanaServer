@@ -83,4 +83,4 @@ const unclaimedVehicleSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("unclaimedVehicle", ipcVehicleSchema);
+export default mongoose.model("unclaimedVehicle", unclaimedVehicleSchema);

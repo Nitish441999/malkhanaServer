@@ -71,4 +71,4 @@ const artoSeizureSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("ArtoSeizure", ipcVehicleSchema);
+export default mongoose.model("ArtoSeizure", artoSeizureSchema);

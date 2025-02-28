@@ -87,4 +87,4 @@ const exciseVehicleSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("ExciseVehicle", ipcVehicleSchema);
+export default mongoose.model("ExciseVehicle", exciseVehicleSchema);
