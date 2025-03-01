@@ -88,7 +88,7 @@ const ipcVehicleEntry = asyncHandler(async (req, res) => {
       new ApiResponce(
         201,
         NewIpcVehicleEntry,
-        "M.V Act Seizure Entry successful "
+        "Ipc Vehicle Entry successful "
       )
     );
 });

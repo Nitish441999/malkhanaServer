@@ -47,7 +47,7 @@ const createFslEntry = asyncHandler(async (req, res) => {
 
   const existingEntry = await FslEntry.findOne({ firNo, mudNo });
   if (existingEntry) {
-    throw new ApiError(400, "Malkhana entry already exists");
+    throw new ApiError(400, "fsl entry already exists");
   }
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
   if (!avatarLocalPath) {
@@ -81,7 +81,7 @@ const createFslEntry = asyncHandler(async (req, res) => {
   res
     .status(201)
     .json(
-      new ApiResponse(201, newEntry, "Malkhana entry created successfully")
+      new ApiResponse(201, newEntry, "fsl entry created successfully")
     );
 });
 
@@ -95,13 +95,13 @@ const getFslEntry = asyncHandler(async (req, res) => {
   const flsDetails = await FslEntry.findById(id);
 
   if (!flsDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "fsl entry not found");
   }
 
   res
     .status(200)
     .json(
-      new ApiResponse(200, flsDetails, "Malkhana entry fetched successfully")
+      new ApiResponse(200, flsDetails, "fsl entry fetched successfully")
     );
 });
 
@@ -109,13 +109,13 @@ const getAllFslEntry = asyncHandler(async (req, res) => {
   const flsEntries = await FslEntry.find();
 
   if (!flsEntries.length) {
-    throw new ApiError(404, "No Malkhana entries found");
+    throw new ApiError(404, "No fsl entries found");
   }
 
   res
     .status(200)
     .json(
-      new ApiResponse(200, flsEntries, "Malkhana entries fetched successfully")
+      new ApiResponse(200, flsEntries, "fsl entries fetched successfully")
     );
 });
 
@@ -175,7 +175,7 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
   );
 
   if (!flsUpdateDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "fsl entry not found");
   }
 
   return res
@@ -184,7 +184,7 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         flsUpdateDetails,
-        "Malkhana details updated successfully"
+        "fsl details updated successfully"
       )
     );
 });

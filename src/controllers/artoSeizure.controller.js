@@ -78,7 +78,7 @@ const artoSeizureEntry = asyncHandler(async (req, res) => {
       new ApiResponce(
         201,
         NewArtoSeizureEntry,
-        "M.V Act Seizure Entry successful "
+        "Aarto Seizure Entry successful "
       )
     );
 });

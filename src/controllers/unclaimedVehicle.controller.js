@@ -87,7 +87,7 @@ const unclaimedVehicleEntry = asyncHandler(async (req, res) => {
       new ApiResponce(
         201,
         NewUnclaimedVehicleEntry,
-        "M.V Act Seizure Entry successful "
+        "Unclaimed Vehicle Entry successful "
       )
     );
 });

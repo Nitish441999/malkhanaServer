@@ -48,7 +48,7 @@ const createOthersEntry = asyncHandler(async (req, res) => {
 
   const existingEntry = await OtherEntry.findOne({ firNo, mudNo });
   if (existingEntry) {
-    throw new ApiError(400, "Malkhana entry already exists");
+    throw new ApiError(400, "other entry already exists");
   }
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
   if (!avatarLocalPath) {
@@ -82,7 +82,7 @@ const createOthersEntry = asyncHandler(async (req, res) => {
   res
     .status(201)
     .json(
-      new ApiResponse(201, newEntry, "Malkhana entry created successfully")
+      new ApiResponse(201, newEntry, "other entry created successfully")
     );
 });
 
@@ -96,13 +96,13 @@ const getOthersEntry = asyncHandler(async (req, res) => {
   const otherDetails = await OtherEntry.findById(id);
 
   if (!otherDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "other entry not found");
   }
 
   res
     .status(200)
     .json(
-      new ApiResponse(200, otherDetails, "Malkhana entry fetched successfully")
+      new ApiResponse(200, otherDetails, "other entry fetched successfully")
     );
 });
 
@@ -110,7 +110,7 @@ const getAllOthersEntry = asyncHandler(async (req, res) => {
   const otherEntries = await OtherEntry.find();
 
   if (!otherEntries.length) {
-    throw new ApiError(404, "No Malkhana entries found");
+    throw new ApiError(404, "No other entries found");
   }
 
   res
@@ -119,7 +119,7 @@ const getAllOthersEntry = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         otherEntries,
-        "Malkhana entries fetched successfully"
+        "other entries fetched successfully"
       )
     );
 });
@@ -180,7 +180,7 @@ const updateOthersEntryDetails = asyncHandler(async (req, res) => {
   );
 
   if (!otherUpdateDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "other entry not found");
   }
 
   return res
@@ -189,7 +189,7 @@ const updateOthersEntryDetails = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         otherUpdateDetails,
-        "Malkhana details updated successfully"
+        "other details updated successfully"
       )
     );
 });

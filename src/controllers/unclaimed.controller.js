@@ -46,7 +46,7 @@ const createUnclaimedEntry = asyncHandler(async (req, res) => {
 
   const existingEntry = await UnclaimedEntry.findOne({ firNo, mudNo });
   if (existingEntry) {
-    throw new ApiError(400, "Malkhana entry already exists");
+    throw new ApiError(400, "unclaimed entry already exists");
   }
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
   if (!avatarLocalPath) {
@@ -80,7 +80,7 @@ const createUnclaimedEntry = asyncHandler(async (req, res) => {
   res
     .status(201)
     .json(
-      new ApiResponse(201, newEntry, "Malkhana entry created successfully")
+      new ApiResponse(201, newEntry, "unclaimed entry created successfully")
     );
 });
 
@@ -94,7 +94,7 @@ const getUnclaimedEntry = asyncHandler(async (req, res) => {
   const UnclaimedEntryDetails = await UnclaimedEntry.findById(id);
 
   if (!UnclaimedEntryDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "unclaimed entry not found");
   }
 
   res
@@ -103,7 +103,7 @@ const getUnclaimedEntry = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         UnclaimedEntryDetails,
-        "Malkhana entry fetched successfully"
+        "unclaimed entry fetched successfully"
       )
     );
 });
@@ -112,7 +112,7 @@ const getAllUnclaimedEntry = asyncHandler(async (req, res) => {
   const unclaimedEntries = await UnclaimedEntry.find();
 
   if (!unclaimedEntries.length) {
-    throw new ApiError(404, "No Malkhana entries found");
+    throw new ApiError(404, "No unclaimed entries found");
   }
 
   res
@@ -120,8 +120,8 @@ const getAllUnclaimedEntry = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        malkhanaEntries,
-        "MalkhanaunclaimedEntries entries fetched successfully"
+        unclaimedEntries,
+        "unclaimedunclaimedEntries entries fetched successfully"
       )
     );
 });
@@ -182,7 +182,7 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
   );
 
   if (!unclaimedUpdateDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "unclaimed entry not found");
   }
 
   return res
@@ -191,7 +191,7 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         unclaimedUpdateDetails,
-        "Malkhana details updated successfully"
+        "unclaimed details updated successfully"
       )
     );
 });

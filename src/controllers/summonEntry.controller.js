@@ -60,7 +60,7 @@ const createSummonEntry = asyncHandler(async (req, res) => {
   res
     .status(201)
     .json(
-      new ApiResponce(200, newSummonEntry, " Create Summon Entry successfully")
+      new ApiResponse(200, newSummonEntry, " Create Summon Entry successfully")
     );
 });
 

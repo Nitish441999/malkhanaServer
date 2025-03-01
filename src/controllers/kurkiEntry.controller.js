@@ -48,7 +48,7 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
 
   const existingEntry = await KurkiEntry.findOne({ firNo, mudNo });
   if (existingEntry) {
-    throw new ApiError(400, "Malkhana entry already exists");
+    throw new ApiError(400, "kurki entry already exists");
   }
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
   if (!avatarLocalPath) {
@@ -82,7 +82,7 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
   res
     .status(201)
     .json(
-      new ApiResponse(201, newEntry, "Malkhana entry created successfully")
+      new ApiResponse(201, newEntry, "Kurki entry created successfully")
     );
 });
 
@@ -96,7 +96,7 @@ const getKurkiEntry = asyncHandler(async (req, res) => {
   const KurkiEntryDetails = await KurkiEntry.findById(id);
 
   if (!KurkiEntryDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "Kurki entry not found");
   }
 
   res
@@ -105,7 +105,7 @@ const getKurkiEntry = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         KurkiEntryDetails,
-        "Malkhana entry fetched successfully"
+        "Kurki entry fetched successfully"
       )
     );
 });
@@ -114,13 +114,13 @@ const getAllKurkiEntry = asyncHandler(async (req, res) => {
   const kurkiEntry = await KurkiEntry.find();
 
   if (!kurkiEntry.length) {
-    throw new ApiError(404, "No Malkhana entries found");
+    throw new ApiError(404, "No Kurki entries found");
   }
 
   res
     .status(200)
     .json(
-      new ApiResponse(200, kurkiEntry, "Malkhana entries fetched successfully")
+      new ApiResponse(200, kurkiEntry, "Kurki entries fetched successfully")
     );
 });
 
@@ -180,7 +180,7 @@ const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
   );
 
   if (!kurkiEntryUpdateDetails) {
-    throw new ApiError(404, "Malkhana entry not found");
+    throw new ApiError(404, "Kurki entry not found");
   }
 
   return res
@@ -188,8 +188,8 @@ const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        malkhanaUpdateDetails,
-        "Malkhana details updated successfully"
+        KurkiUpdateDetails,
+        "Kurki details updated successfully"
       )
     );
 });

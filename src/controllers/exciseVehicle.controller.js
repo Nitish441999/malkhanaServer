@@ -90,7 +90,7 @@ const exciseVehicleEntry = asyncHandler(async (req, res) => {
       new ApiResponce(
         201,
         NewExciseVehicleEntry,
-        "M.V Act Seizure Entry successful "
+        "Excise Seizure Entry successful "
       )
     );
 });
