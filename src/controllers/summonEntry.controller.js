@@ -55,7 +55,7 @@ const createSummonEntry = asyncHandler(async (req, res) => {
     time,
   });
 
-  await newEntry.save();
+  await newSummonEntry.save();
 
   res
     .status(201)
