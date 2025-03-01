@@ -98,16 +98,16 @@ const getUnclaimedVehicle = asyncHandler(async (req, res) => {
     throw new ApiError(400, "id is inviled");
   }
 
-  const unclaimedVehicle = await UnclaimedVehicle.findById(id);
+  const unclaimedVehicles = await UnclaimedVehicle.findById(id);
 
-  if (!getMvctAct) {
+  if (!unclaimedVehicles) {
     throw new ApiError(404, "Entry not found");
   }
 
   return res
     .status(200)
     .json(
-      new ApiResponce(200, unclaimedVehicle, "Entry retrieved successfully")
+      new ApiResponce(200, unclaimedVehicles, "Entry retrieved successfully")
     );
 });
 

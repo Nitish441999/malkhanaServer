@@ -99,7 +99,7 @@ const getIpcVehicle = asyncHandler(async (req, res) => {
     throw new ApiError(400, "id is inviled");
   }
 
-  const getIpcVehicle = await IpcVehicle.findById(id);
+  const IpcVehicles = await IpcVehicle.findById(id);
 
   if (!getMvctAct) {
     throw new ApiError(404, "Entry not found");
@@ -107,7 +107,7 @@ const getIpcVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, getIpcVehicle, "Entry retrieved successfully"));
+    .json(new ApiResponce(200, IpcVehicles, "Entry retrieved successfully"));
 });
 
 const getIpcVehicleList = asyncHandler(async (req, res) => {

@@ -155,6 +155,16 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
   if (Object.values(req.body).some((value) => !value)) {
     throw new ApiError(400, "All fields are required");
   }
+  if (req.files?.avatar?.[0]?.path) {
+    const avatarFile = req.files.avatar[0].path;
+    const avatarUploadResult = await uploadOnCloudinary(avatarFile);
+
+    if (!avatarUploadResult?.url) {
+      throw new ApiError(500, "Failed to upload new avatar file");
+    }
+
+    req.body.avatar = avatarUploadResult.url;
+  }
 
   const malkhanaUpdateDetails = await MalkhanaEntry.findByIdAndUpdate(
     id,

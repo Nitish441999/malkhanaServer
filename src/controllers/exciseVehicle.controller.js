@@ -101,7 +101,7 @@ const getExciseVehicle = asyncHandler(async (req, res) => {
     throw new ApiError(400, "id is inviled");
   }
 
-  const ExciseVehicle = await ExciseVehicle.findById(id);
+  const exciseVehicles = await ExciseVehicle.findById(id);
 
   if (!getMvctAct) {
     throw new ApiError(404, "Entry not found");
@@ -109,7 +109,7 @@ const getExciseVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, ExciseVehicle, "Entry retrieved successfully"));
+    .json(new ApiResponce(200, exciseVehicles, "Entry retrieved successfully"));
 });
 
 const getExciseVehicleList = asyncHandler(async (req, res) => {
@@ -118,7 +118,7 @@ const getExciseVehicleList = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(200, ExciseVehicleListt, "Entries retrieved successfully")
+      new ApiResponce(200, ExciseVehicleList, "Entries retrieved successfully")
     );
 });
 

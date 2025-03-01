@@ -25,7 +25,6 @@ router
     createMalkhanaEntry
   );
 
-router.route("/:id").get(getMalkhanaEntry).put(updateMalkhanaEntryDetails);
-router.route("/malkhanalist").get(getAllMalkhanaEntries);
+router.route("/:id").get(getMalkhanaEntry).patch(updateMalkhanaEntryDetails);
 
 export default router;
