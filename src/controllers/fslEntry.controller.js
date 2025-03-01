@@ -22,8 +22,8 @@ const createFslEntry = asyncHandler(async (req, res) => {
     caseProperty,
     actType,
     status,
-    avtar,
   } = req.body;
+  console.log(req.body);
 
   if (
     !firNo ||
@@ -40,8 +40,7 @@ const createFslEntry = asyncHandler(async (req, res) => {
     !DakhilKarneWala ||
     !caseProperty ||
     !actType ||
-    !status ||
-    !avtar
+    !status
   ) {
     throw new ApiError(400, "All fields are required");
   }

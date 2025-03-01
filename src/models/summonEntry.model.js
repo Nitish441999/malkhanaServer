@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const summonEntrySchema = new mongoose.Schema(
   {
@@ -39,32 +39,32 @@ const summonEntrySchema = new mongoose.Schema(
       unique: true,
     },
     place: {
-       type: String,
-        required: true
-       },
-    lastDays: {
-       type: Number,
-        required: true 
-      },
-    releaseDays: {
-       type: Number 
-      },
-    actType: { 
-      type: String, 
-      required: true 
+      type: String,
+      required: true,
     },
-    date: { 
-      type: String, 
-      required: true
-     },
-    time: { 
-      type: String, 
-      required: true
-     },
+    lastDays: {
+      type: Number,
+      required: true,
+    },
+    releaseDays: {
+      type: Number,
+    },
+    actType: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    time: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
 const SummonEntry = mongoose.model("SummonEntry", summonEntrySchema);
 
-module.exports = SummonEntry;
+export default SummonEntry;

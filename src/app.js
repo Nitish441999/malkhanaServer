@@ -14,6 +14,7 @@ import exciseVehicleRouter from "./routes/exciseVehicle.Routes.js";
 import ipcVehicleRouter from "./routes/ipcVehicle.Routes.js";
 import seizureVehicleRouter from "./routes/seizureVehicle.Routes.js";
 import unclaimedVehicleRouter from "./routes/unclaimedVehicle.Routes.js";
+import SummonEntryRouter from "./routes/summonEntry.Routes.js";
 dotenv.config();
 
 const app = express();
@@ -46,6 +47,7 @@ app.use("/api/v1/exciseVehicle", exciseVehicleRouter);
 app.use("/api/v1/ipcVehicle", ipcVehicleRouter);
 app.use("/api/v1/seizureVehicle", seizureVehicleRouter);
 app.use("/api/v1/unclaimedVehicle", unclaimedVehicleRouter);
+app.use("/api/v1/summon", SummonEntryRouter);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });

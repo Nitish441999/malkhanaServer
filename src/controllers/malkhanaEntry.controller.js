@@ -129,11 +129,12 @@ const getAllMalkhanaEntries = asyncHandler(async (req, res) => {
 const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
+  
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  const {
+  let {
     firNo,
     mudNo,
     gdNo,
@@ -149,12 +150,15 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
     caseProperty,
     actType,
     status,
-    avtar,
+    avatar,
   } = req.body || {};
 
-  if (Object.values(req.body).some((value) => !value)) {
+  if (
+    Object.values(req.body).some((value) => value === undefined || value === "")
+  ) {
     throw new ApiError(400, "All fields are required");
   }
+
   if (req.files?.avatar?.[0]?.path) {
     const avatarFile = req.files.avatar[0].path;
     const avatarUploadResult = await uploadOnCloudinary(avatarFile);
@@ -163,7 +167,7 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Failed to upload new avatar file");
     }
 
-    req.body.avatar = avatarUploadResult.url;
+    avatar = avatarUploadResult.url;
   }
 
   const malkhanaUpdateDetails = await MalkhanaEntry.findByIdAndUpdate(
@@ -185,7 +189,7 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
         caseProperty,
         actType,
         status,
-        avtar,
+        avatar,
       },
     },
     { new: true, runValidators: true }
