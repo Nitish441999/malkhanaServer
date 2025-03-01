@@ -3,6 +3,7 @@ import MalkhanaEntry from "../models/malkhanaEntry.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
+import { uploadOnCloudinary } from "../config/cloudinary.js";
 
 const createMalkhanaEntry = asyncHandler(async (req, res) => {
   const {
@@ -21,9 +22,8 @@ const createMalkhanaEntry = asyncHandler(async (req, res) => {
     caseProperty,
     actType,
     status,
-    
   } = req.body;
-
+  console.log(req.body);
   if (
     !firNo ||
     !mudNo ||
@@ -39,8 +39,7 @@ const createMalkhanaEntry = asyncHandler(async (req, res) => {
     !DakhilKarneWala ||
     !caseProperty ||
     !actType ||
-    !status 
-   
+    !status
   ) {
     throw new ApiError(400, "All fields are required");
   }

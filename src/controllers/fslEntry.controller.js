@@ -3,6 +3,7 @@ import FslEntry from "../models/FslEntry.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
+import { uploadOnCloudinary } from "../config/cloudinary.js";
 
 const createFslEntry = asyncHandler(async (req, res) => {
   const {

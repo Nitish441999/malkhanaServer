@@ -45,7 +45,7 @@ app.use("/api/v1/artoSeizure", artoSeizureRouter);
 app.use("/api/v1/exciseVehicle", exciseVehicleRouter);
 app.use("/api/v1/ipcVehicle", ipcVehicleRouter);
 app.use("/api/v1/seizureVehicle", seizureVehicleRouter);
-app.use("/api/v1/unclaimedVehicle", unclaimedRouter);
+app.use("/api/v1/unclaimedVehicle", unclaimedVehicleRouter);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });

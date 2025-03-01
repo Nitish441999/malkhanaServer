@@ -3,6 +3,7 @@ import UnclaimedEntry from "../models/UnclaimedEntry.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
+import { uploadOnCloudinary } from "../config/cloudinary.js";
 
 const createUnclaimedEntry = asyncHandler(async (req, res) => {
   const {
@@ -21,7 +22,6 @@ const createUnclaimedEntry = asyncHandler(async (req, res) => {
     caseProperty,
     actType,
     status,
-    avtar,
   } = req.body;
 
   if (
@@ -39,8 +39,7 @@ const createUnclaimedEntry = asyncHandler(async (req, res) => {
     !DakhilKarneWala ||
     !caseProperty ||
     !actType ||
-    !status ||
-    !avtar
+    !status
   ) {
     throw new ApiError(400, "All fields are required");
   }

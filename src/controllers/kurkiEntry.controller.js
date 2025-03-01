@@ -3,6 +3,7 @@ import KurkiEntry from "../models/kurkiEntry.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
+import { uploadOnCloudinary } from "../config/cloudinary.js";
 
 const createKurkiEntry = asyncHandler(async (req, res) => {
   const {
@@ -21,7 +22,7 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
     caseProperty,
     actType,
     status,
-    avtar,
+    
   } = req.body;
 
   if (
@@ -39,8 +40,8 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
     !DakhilKarneWala ||
     !caseProperty ||
     !actType ||
-    !status ||
-    !avtar
+    !status 
+    
   ) {
     throw new ApiError(400, "All fields are required");
   }
