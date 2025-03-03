@@ -2,6 +2,7 @@ import { Router } from "express";
 import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
+  deleteIpcVehicle,
   getIpcVehicle,
   getIpcVehicleList,
   ipcVehicleEntry,
@@ -26,7 +27,7 @@ router
   );
 
 router
-  .route("/c/:id")
+  .route("/:id")
   .get(getIpcVehicle)
   .put(
     upload.fields([
@@ -36,6 +37,6 @@ router
       },
     ]),
     updateIpcVehicle
-  );
+  ).delete(deleteIpcVehicle);
 
 export default router;

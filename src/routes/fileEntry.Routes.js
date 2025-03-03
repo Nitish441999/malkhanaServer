@@ -4,7 +4,11 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url"; // Required for __dirname in ES Modules
 import verifyJWT from "../middlewares/auth.Middleware.js";
-import { uploadExcelFile } from "../controllers/fileEntry.controller.js";
+import {
+  deletefileEntry,
+  getFileEntryList,
+  uploadExcelFile,
+} from "../controllers/fileEntry.controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,8 +29,10 @@ const storage = multer.diskStorage({
   },
 });
 
+
 const upload = multer({ storage: storage });
 
 router.post("/", upload.single("file"), uploadExcelFile);
-
+router.get("/:id", getFileEntryList)
+router.delete("/:id ", deletefileEntry);
 export default router;

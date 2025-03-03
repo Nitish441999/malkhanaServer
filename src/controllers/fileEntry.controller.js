@@ -11,27 +11,55 @@ const uploadExcelFile = asyncHandler(async (req, res) => {
       throw new ApiError(400, "No file uploaded!");
     }
 
-    console.log("File uploaded at:", req.file.path); // Debugging
+    console.log("File uploaded at:", req.file.path);
 
-    // Read Excel file
     const workbook = xlsx.readFile(req.file.path);
-    const sheetName = workbook.SheetNames[0]; // First sheet
+    const sheetName = workbook.SheetNames[0];
     const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
     if (!data || data.length === 0) {
       throw new ApiError(400, "Excel file is empty!");
     }
 
-    // Insert data into database
     await FileEntry.insertMany(data);
 
-    // Delete the file after processing
     fs.unlinkSync(req.file.path);
 
-    res.status(200).json(new ApiResponse(200, data, "Excel file imported successfully!"));
+    res
+      .status(200)
+      .json(new ApiResponse(200, data, "Excel file imported successfully!"));
   } catch (error) {
     throw new ApiError(500, "Error processing Excel file");
   }
 });
 
-export { uploadExcelFile };
+const getFileEntryList = asyncHandler(async (req, res) => {
+  const fileEntryList = await FileEntry.find({});
+  if (!fileEntryList) {
+    throw new ApiError(400, "File entry List Is Not Found");
+  }
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Get list of file entry successfull"));
+});
+
+const deletefileEntry = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid MongoDB ID format");
+  }
+
+  const existingEntry = await FileEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
+  await FileEntry.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
+});
+
+export { uploadExcelFile, getFileEntryList, deletefileEntry };

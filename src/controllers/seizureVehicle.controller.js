@@ -172,7 +172,12 @@ const updateSeizureVehicle = asyncHandler(async (req, res) => {
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
   }
+  const existingMudNo = existingEntry.mudNo;
 
+  const releaseItem = await releaseModel.find({ mudNo: existingMudNo });
+  if (releaseItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
   if (req.files?.avatar?.[0]?.path) {
     const avatarFile = req.files.avatar[0].path;
     const avatarUploadResult = await uploadOnCloudinary(avatarFile);
@@ -194,9 +199,29 @@ const updateSeizureVehicle = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
 });
+
+const deleteSeizureVehicle = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid MongoDB ID format");
+  }
+
+  const existingEntry = await SeizureVehicle.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
+  await SeizureVehicle.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
+});
 export {
   seizureVehicleEntry,
   getSeizureVehicle,
   getSeizureVehicleList,
   updateSeizureVehicle,
+  deleteSeizureVehicle
 };

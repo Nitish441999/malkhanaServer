@@ -2,6 +2,7 @@ import { Router } from "express";
 import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
+  deleteUnclaimedVehicle,
   getUnclaimedVehicle,
   getUnclaimedVehicleList,
   unclaimedVehicleEntry,
@@ -36,6 +37,6 @@ router
       },
     ]),
     updateUnclaimedVehicle
-  );
+  ).delete(deleteUnclaimedVehicle);;
 
 export default router;

@@ -208,6 +208,25 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "User details updated successfully"));
 });
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid MongoDB ID format");
+  }
+
+  const existingEntry = await User.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
+  await User.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, " ", "User deleted successfully"));
+});
 export {
   createUser,
   userLogin,
@@ -215,4 +234,5 @@ export {
   changeCurrentPassword,
   updateAccountDetails,
   getCurrentUser,
+  deleteUser,
 };

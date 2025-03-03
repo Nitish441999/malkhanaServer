@@ -175,4 +175,29 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
     );
 });
 
-export { createFslEntry, getFslEntry, getAllFslEntry, updateFslEntryDetails };
+const deleteFslEntry = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid MongoDB ID format");
+  }
+
+  const existingEntry = await FslEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
+  await FslEntry.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
+});
+
+export {
+  createFslEntry,
+  getFslEntry,
+  getAllFslEntry,
+  updateFslEntryDetails,
+  deleteFslEntry,
+};

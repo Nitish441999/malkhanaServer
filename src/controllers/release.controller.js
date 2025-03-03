@@ -46,7 +46,7 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
   }
 
   const documentLocalPath = req.files?.documentImage?.[0]?.path;
-  console.log(documentLocalPath);
+  
 
   if (!documentLocalPath) {
     throw new ApiError(400, "Document file is required");
@@ -76,5 +76,23 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, newEntry, "Entry created successfully"));
 });
+const deleteReleaseData = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-export { createReleaseEntry };
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid MongoDB ID format");
+  }
+
+  const existingEntry = await ReleaseEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
+  await ReleaseEntry.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
+});
+
+export { createReleaseEntry, deleteReleaseData };

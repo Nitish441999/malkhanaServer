@@ -102,4 +102,28 @@ const getSummonEntryList = asyncHandler(async (req, res) => {
     );
 });
 
-export { createSummonEntry, getSummonEntry, getSummonEntryList };
+const deleteSummonEntry = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid MongoDB ID format");
+  }
+
+  const existingEntry = await SummonEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
+  await SummonEntry.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
+});
+
+export {
+  createSummonEntry,
+  getSummonEntry,
+  getSummonEntryList,
+  deleteSummonEntry,
+};

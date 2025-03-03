@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
-import { createReleaseEntry } from "../controllers/release.controller.js";
+import {
+  createReleaseEntry,
+  deleteReleaseData,
+} from "../controllers/release.controller.js";
 
 const router = Router();
 
@@ -14,6 +17,8 @@ router.route("/").post(
   ]),
   createReleaseEntry
 );
+
+router.route("/:id").delete(deleteReleaseData);
 
 // router
 //   .route("/:id")

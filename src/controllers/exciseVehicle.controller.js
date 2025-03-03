@@ -199,9 +199,30 @@ const updateExciseVehicle = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
 });
+
+const deleteExciseVehicle = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid MongoDB ID format");
+  }
+
+  const existingEntry = await ExciseVehicle.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
+  await ExciseVehicle.findByIdAndDelete(id);
+
+  return res
+    .status(200)
+    .json(new ApiResponce(200, " ", "Data deleted successfully"));
+});
+
 export {
   exciseVehicleEntry,
   getExciseVehicle,
   getExciseVehicleList,
   updateExciseVehicle,
+  deleteExciseVehicle,
 };

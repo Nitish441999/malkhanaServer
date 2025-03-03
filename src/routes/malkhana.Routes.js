@@ -4,6 +4,7 @@ import {
   getMalkhanaEntry,
   getAllMalkhanaEntries,
   updateMalkhanaEntryDetails,
+  deleteMalkhanaEntry,
 } from "../controllers/malkhanaEntry.controller.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
@@ -25,6 +26,10 @@ router
     createMalkhanaEntry
   );
 
-router.route("/:id").get(getMalkhanaEntry).patch(updateMalkhanaEntryDetails);
+router
+  .route("/:id")
+  .get(getMalkhanaEntry)
+  .patch(updateMalkhanaEntryDetails)
+  .delete(deleteMalkhanaEntry);
 
 export default router;

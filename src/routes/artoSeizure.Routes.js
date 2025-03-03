@@ -3,6 +3,7 @@ import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
   artoSeizureEntry,
+  deleteArtoSeizure,
   getArtoSeizure,
   getArtoSeizureList,
   updateArtoSeizure,
@@ -36,6 +37,6 @@ router
       },
     ]),
     updateArtoSeizure
-  );
-
+  )
+  .delete(deleteArtoSeizure);
 export default router;

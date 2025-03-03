@@ -4,6 +4,7 @@ import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
   createUnclaimedEntry,
+  deleteUnclaimedEntry,
   getAllUnclaimedEntry,
   getUnclaimedEntry,
   updateUnclaimedEntryDetails,
@@ -26,6 +27,6 @@ router
     createUnclaimedEntry
   );
 
-router.route("/:id").get(getUnclaimedEntry).put(updateUnclaimedEntryDetails);
+router.route("/:id").get(getUnclaimedEntry).put(updateUnclaimedEntryDetails).delete(deleteUnclaimedEntry);;
 
 export default router;

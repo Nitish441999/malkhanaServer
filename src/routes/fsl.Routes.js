@@ -2,7 +2,13 @@ import { Router } from "express";
 
 import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
-import { createFslEntry, getAllFslEntry, getFslEntry, updateFslEntryDetails } from "../controllers/fslEntry.controller.js";
+import {
+  createFslEntry,
+  deleteFslEntry,
+  getAllFslEntry,
+  getFslEntry,
+  updateFslEntryDetails,
+} from "../controllers/fslEntry.controller.js";
 
 const router = Router();
 
@@ -19,9 +25,10 @@ router
       },
     ]),
     createFslEntry
-  );
+  )
+  
+  
 
-router.route("/:id").get(getFslEntry).put(updateFslEntryDetails);
-
+router.route("/:id").get(getFslEntry).put(updateFslEntryDetails).delete(deleteFslEntry);
 
 export default router;

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
+  deleteSeizureVehicle,
   getSeizureVehicle,
   getSeizureVehicleList,
   seizureVehicleEntry,
@@ -26,7 +27,7 @@ router
   );
 
 router
-  .route("/c/:id")
+  .route("/:id")
   .get(getSeizureVehicle)
   .put(
     upload.fields([
@@ -36,6 +37,7 @@ router
       },
     ]),
     updateSeizureVehicle
-  );
+  )
+  .delete(deleteSeizureVehicle);
 
 export default router;

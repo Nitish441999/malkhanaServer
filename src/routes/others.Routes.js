@@ -4,6 +4,7 @@ import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
   createOthersEntry,
+  deleteOtherEntry,
   getAllOthersEntry,
   getOthersEntry,
   updateOthersEntryDetails,
@@ -26,6 +27,10 @@ router
     createOthersEntry
   );
 
-router.route("/:id").get(getOthersEntry).put(updateOthersEntryDetails);
+router
+  .route("/:id")
+  .get(getOthersEntry)
+  .put(updateOthersEntryDetails)
+  .delete(deleteOtherEntry);
 
 export default router;

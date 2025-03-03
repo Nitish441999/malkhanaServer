@@ -2,6 +2,7 @@ import { Router } from "express";
 import { upload } from "../middlewares/multer.middlewares.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
+  deleteMvActSeizure,
   getMvActSeizure,
   getMvActSeizureList,
   mvActSeizureEntry,
@@ -36,6 +37,7 @@ router
       },
     ]),
     updateMvActSeizure
-  );
+  )
+  .delete(deleteMvActSeizure);
 
 export default router;
