@@ -62,8 +62,7 @@ const artoSeizureSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      required: true,
-      trim: true,
+     
     },
   },
   {

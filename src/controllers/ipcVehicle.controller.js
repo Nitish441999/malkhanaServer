@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponce from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
 
 const ipcVehicleEntry = asyncHandler(async (req, res) => {
   const {
@@ -85,11 +86,7 @@ const ipcVehicleEntry = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponce(
-        201,
-        NewIpcVehicleEntry,
-        "Ipc Vehicle Entry successful "
-      )
+      new ApiResponce(201, NewIpcVehicleEntry, "Ipc Vehicle Entry successful ")
     );
 });
 
@@ -127,45 +124,40 @@ const updateIpcVehicle = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  const {
-    mudNo,
-    gdNo,
-    underSection,
-    vehicleType,
-    regNo,
-    chassisNo,
-    engineNo,
-    colour,
-    gdDate,
-    actType,
-    result,
-    firNo,
-    vehicleOwner,
-    vivechak,
-  } = req.body;
-
-  if (
-    !mudNo ||
-    !gdNo ||
-    !underSection ||
-    !vehicleType ||
-    !regNo ||
-    !chassisNo ||
-    !engineNo ||
-    !colour ||
-    !gdDate ||
-    !actType ||
-    !result ||
-    !vivechak ||
-    !vehicleOwner ||
-    !firNo
-  ) {
-    throw new ApiError(400, "All fields are required");
-  }
-
   const existingEntry = await IpcVehicle.findById(id);
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
+  }
+
+  const existingMudNo = existingEntry.mudNo;
+  const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
+
+  if (releaseItem) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
+
+  // ✅ Extract and validate required fields
+  const requiredFields = [
+    "mudNo",
+    "gdNo",
+    "underSection",
+    "vehicleType",
+    "regNo",
+    "chassisNo",
+    "engineNo",
+    "colour",
+    "gdDate",
+    "actType",
+    "result",
+    "vivechak",
+    "vehicleOwner",
+    "firNo",
+  ];
+
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      throw new ApiError(400, `Field '${field}' is required`);
+    }
   }
 
   if (req.files?.avatar?.[0]?.path) {
@@ -185,8 +177,12 @@ const updateIpcVehicle = asyncHandler(async (req, res) => {
     { new: true, runValidators: true }
   );
 
+  if (!updatedEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
+
   return res
     .status(200)
-    .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
+    .json(new ApiResponse(200, updatedEntry, "Entry updated successfully"));
 });
 export { ipcVehicleEntry, getIpcVehicle, getIpcVehicleList, updateIpcVehicle };

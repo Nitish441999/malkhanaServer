@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponce from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
 
 const mvActSeizureEntry = asyncHandler(async (req, res) => {
   const {
@@ -117,39 +118,37 @@ const updateMvActSeizure = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  const {
-    mudNo,
-    gdNo,
-    underSection,
-    vehicleType,
-    regNo,
-    chassisNo,
-    engineNo,
-    colour,
-    gdDate,
-    actType,
-    result,
-  } = req.body;
+  const requiredFields = [
+    "mudNo",
+    "gdNo",
+    "underSection",
+    "vehicleType",
+    "regNo",
+    "chassisNo",
+    "engineNo",
+    "colour",
+    "gdDate",
+    "actType",
+    "result",
+  ];
 
-  if (
-    !mudNo ||
-    !gdNo ||
-    !underSection ||
-    !vehicleType ||
-    !regNo ||
-    !chassisNo ||
-    !engineNo ||
-    !colour ||
-    !gdDate ||
-    !actType ||
-    !result
-  ) {
-    throw new ApiError(400, "All fields are required");
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      throw new ApiError(400, `Field '${field}' is required`);
+    }
   }
 
   const existingEntry = await MvActSeizure.findById(id);
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
+  }
+
+  const releaseItem = await releaseModel.findOne({
+    mudNo: existingEntry.mudNo,
+  });
+
+  if (releaseItem) {
+    throw new ApiError(400, "Modification is not allowed for released data");
   }
 
   if (req.files?.avatar?.[0]?.path) {
@@ -169,10 +168,15 @@ const updateMvActSeizure = asyncHandler(async (req, res) => {
     { new: true, runValidators: true }
   );
 
+  if (!updatedEntry) {
+    throw new ApiError(404, "Failed to update entry");
+  }
+
   return res
     .status(200)
     .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
 });
+
 export {
   mvActSeizureEntry,
   getMvActSeizure,

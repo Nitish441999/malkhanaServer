@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponce from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
 
 const artoSeizureEntry = asyncHandler(async (req, res) => {
   const {
@@ -151,6 +152,12 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
   }
+  const existingMudNo = existingEntry.mudNo;
+
+  const releaseItem = await releaseModel.find({ mudNo: existingMudNo });
+  if (releaseItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
 
   if (req.files?.avatar?.[0]?.path) {
     const avatarFile = req.files.avatar[0].path;
@@ -173,6 +180,7 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
 });
+
 export {
   artoSeizureEntry,
   getArtoSeizure,

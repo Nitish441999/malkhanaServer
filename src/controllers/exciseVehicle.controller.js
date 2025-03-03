@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponce from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
 
 const exciseVehicleEntry = asyncHandler(async (req, res) => {
   const {
@@ -169,6 +170,12 @@ const updateExciseVehicle = asyncHandler(async (req, res) => {
   const existingEntry = await ExciseVehicle.findById(id);
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
+  }
+  const existingMudNo = existingEntry.mudNo;
+
+  const releaseItem = await releaseModel.find({ mudNo: existingMudNo });
+  if (releaseItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for released data");
   }
 
   if (req.files?.avatar?.[0]?.path) {

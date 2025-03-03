@@ -26,13 +26,13 @@ router
   );
 
 router
-  .route("/c/:id")
+  .route("/:id")
   .get(getArtoSeizure)
-  .put(
+  .patch(
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     updateArtoSeizure

@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
 
 const createKurkiEntry = asyncHandler(async (req, res) => {
   const {
@@ -22,7 +23,6 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
     caseProperty,
     actType,
     status,
-    
   } = req.body;
 
   if (
@@ -40,8 +40,7 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
     !DakhilKarneWala ||
     !caseProperty ||
     !actType ||
-    !status 
-    
+    !status
   ) {
     throw new ApiError(400, "All fields are required");
   }
@@ -81,9 +80,7 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
 
   res
     .status(201)
-    .json(
-      new ApiResponse(201, newEntry, "Kurki entry created successfully")
-    );
+    .json(new ApiResponse(201, newEntry, "Kurki entry created successfully"));
 });
 
 const getKurkiEntry = asyncHandler(async (req, res) => {
@@ -127,55 +124,62 @@ const getAllKurkiEntry = asyncHandler(async (req, res) => {
 const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
+  // ✅ Validate MongoDB ObjectId format
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  const {
-    firNo,
-    mudNo,
-    gdNo,
-    ioName,
-    banam,
-    underSection,
-    description,
-    place,
-    court,
-    firYear,
-    gdDate,
-    DakhilKarneWala,
-    caseProperty,
-    actType,
-    status,
-    avtar,
-  } = req.body || {};
+  // ✅ Check if the entry exists
+  const existingEntry = await KurkiEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
 
-  if (Object.values(req.body).some((value) => !value)) {
-    throw new ApiError(400, "All fields are required");
+  // ✅ Prevent modification if entry is released
+  const existingMudNo = existingEntry.mudNo;
+  const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
+
+  if (releaseItem) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
+
+  const requiredFields = [
+    "firNo",
+    "mudNo",
+    "gdNo",
+    "ioName",
+    "banam",
+    "underSection",
+    "description",
+    "place",
+    "court",
+    "firYear",
+    "gdDate",
+    "DakhilKarneWala",
+    "caseProperty",
+    "actType",
+    "status",
+  ];
+
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      throw new ApiError(400, `Field '${field}' is required`);
+    }
+  }
+  if (req.files?.avatar?.[0]?.path) {
+    const avatarFile = req.files.avatar[0].path;
+    const avatarUploadResult = await uploadOnCloudinary(avatarFile);
+
+    if (!avatarUploadResult?.url) {
+      throw new ApiError(500, "Failed to upload new avatar file");
+    }
+
+    req.body.avatar = avatarUploadResult.url;
   }
 
   const kurkiEntryUpdateDetails = await KurkiEntry.findByIdAndUpdate(
     id,
-    {
-      $set: {
-        firNo,
-        mudNo,
-        gdNo,
-        ioName,
-        banam,
-        underSection,
-        description,
-        place,
-        court,
-        firYear,
-        gdDate,
-        DakhilKarneWala,
-        caseProperty,
-        actType,
-        status,
-        avtar,
-      },
-    },
+    { $set: req.body },
     { new: true, runValidators: true }
   );
 
@@ -188,7 +192,7 @@ const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        KurkiUpdateDetails,
+        kurkiEntryUpdateDetails,
         "Kurki details updated successfully"
       )
     );

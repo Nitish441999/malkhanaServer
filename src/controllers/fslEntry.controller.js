@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
 
 const createFslEntry = asyncHandler(async (req, res) => {
   const {
@@ -80,9 +81,7 @@ const createFslEntry = asyncHandler(async (req, res) => {
 
   res
     .status(201)
-    .json(
-      new ApiResponse(201, newEntry, "fsl entry created successfully")
-    );
+    .json(new ApiResponse(201, newEntry, "fsl entry created successfully"));
 });
 
 const getFslEntry = asyncHandler(async (req, res) => {
@@ -100,9 +99,7 @@ const getFslEntry = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(
-      new ApiResponse(200, flsDetails, "fsl entry fetched successfully")
-    );
+    .json(new ApiResponse(200, flsDetails, "fsl entry fetched successfully"));
 });
 
 const getAllFslEntry = asyncHandler(async (req, res) => {
@@ -114,9 +111,7 @@ const getAllFslEntry = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(
-      new ApiResponse(200, flsEntries, "fsl entries fetched successfully")
-    );
+    .json(new ApiResponse(200, flsEntries, "fsl entries fetched successfully"));
 });
 
 const updateFslEntryDetails = asyncHandler(async (req, res) => {
@@ -126,66 +121,57 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  const {
-    firNo,
-    mudNo,
-    gdNo,
-    ioName,
-    banam,
-    underSection,
-    description,
-    place,
-    court,
-    firYear,
-    gdDate,
-    DakhilKarneWala,
-    caseProperty,
-    actType,
-    status,
-    avtar,
-  } = req.body || {};
-
-  if (Object.values(req.body).some((value) => !value)) {
-    throw new ApiError(400, "All fields are required");
+  const existingEntry = await FslEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
   }
 
-  const flsUpdateDetails = await FslEntry.findByIdAndUpdate(
+  const existingMudNo = existingEntry.mudNo;
+  const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
+
+  if (releaseItem) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
+
+  const requiredFields = [
+    "firNo",
+    "mudNo",
+    "gdNo",
+    "ioName",
+    "banam",
+    "underSection",
+    "description",
+    "place",
+    "court",
+    "firYear",
+    "gdDate",
+    "DakhilKarneWala",
+    "caseProperty",
+    "actType",
+    "status",
+    "avtar",
+  ];
+
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      throw new ApiError(400, `Field '${field}' is required`);
+    }
+  }
+
+  const updatedFslEntry = await FslEntry.findByIdAndUpdate(
     id,
-    {
-      $set: {
-        firNo,
-        mudNo,
-        gdNo,
-        ioName,
-        banam,
-        underSection,
-        description,
-        place,
-        court,
-        firYear,
-        gdDate,
-        DakhilKarneWala,
-        caseProperty,
-        actType,
-        status,
-        avtar,
-      },
-    },
+    { $set: req.body },
     { new: true, runValidators: true }
   );
 
-  if (!flsUpdateDetails) {
-    throw new ApiError(404, "fsl entry not found");
+  if (!updatedFslEntry) {
+    throw new ApiError(404, "FSL entry not found");
   }
 
   return res
     .status(200)
     .json(
-      new ApiResponse(
-        200,
-        flsUpdateDetails,
-        "fsl details updated successfully"
-      )
+      new ApiResponse(200, updatedFslEntry, "FSL details updated successfully")
     );
 });
 

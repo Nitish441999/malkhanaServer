@@ -1,0 +1,37 @@
+import asyncHandler from "../utils/asyncHandler.js";
+import FileEntry from "../models/fileEntry.model.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js"; // Fixed import name
+import xlsx from "xlsx";
+import fs from "fs";
+
+const uploadExcelFile = asyncHandler(async (req, res) => {
+  try {
+    if (!req.file) {
+      throw new ApiError(400, "No file uploaded!");
+    }
+
+    console.log("File uploaded at:", req.file.path); // Debugging
+
+    // Read Excel file
+    const workbook = xlsx.readFile(req.file.path);
+    const sheetName = workbook.SheetNames[0]; // First sheet
+    const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    if (!data || data.length === 0) {
+      throw new ApiError(400, "Excel file is empty!");
+    }
+
+    // Insert data into database
+    await FileEntry.insertMany(data);
+
+    // Delete the file after processing
+    fs.unlinkSync(req.file.path);
+
+    res.status(200).json(new ApiResponse(200, data, "Excel file imported successfully!"));
+  } catch (error) {
+    throw new ApiError(500, "Error processing Excel file");
+  }
+});
+
+export { uploadExcelFile };

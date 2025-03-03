@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
 
 const createMalkhanaEntry = asyncHandler(async (req, res) => {
   const {
@@ -129,34 +130,44 @@ const getAllMalkhanaEntries = asyncHandler(async (req, res) => {
 const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  let {
-    firNo,
-    mudNo,
-    gdNo,
-    ioName,
-    banam,
-    underSection,
-    description,
-    place,
-    court,
-    firYear,
-    gdDate,
-    DakhilKarneWala,
-    caseProperty,
-    actType,
-    status,
-    avatar,
-  } = req.body || {};
+  const existingEntry = await MalkhanaEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
+  }
 
-  if (
-    Object.values(req.body).some((value) => value === undefined || value === "")
-  ) {
-    throw new ApiError(400, "All fields are required");
+  const existingMudNo = existingEntry.mudNo;
+  const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
+
+  if (releaseItem) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
+
+  const requiredFields = [
+    "firNo",
+    "mudNo",
+    "gdNo",
+    "ioName",
+    "banam",
+    "underSection",
+    "description",
+    "place",
+    "court",
+    "firYear",
+    "gdDate",
+    "DakhilKarneWala",
+    "caseProperty",
+    "actType",
+    "status",
+  ];
+
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      throw new ApiError(400, `Field '${field}' is required`);
+    }
   }
 
   if (req.files?.avatar?.[0]?.path) {
@@ -172,26 +183,7 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
 
   const malkhanaUpdateDetails = await MalkhanaEntry.findByIdAndUpdate(
     id,
-    {
-      $set: {
-        firNo,
-        mudNo,
-        gdNo,
-        ioName,
-        banam,
-        underSection,
-        description,
-        place,
-        court,
-        firYear,
-        gdDate,
-        DakhilKarneWala,
-        caseProperty,
-        actType,
-        status,
-        avatar,
-      },
-    },
+    { $set: { ...req.body, avatar } },
     { new: true, runValidators: true }
   );
 
