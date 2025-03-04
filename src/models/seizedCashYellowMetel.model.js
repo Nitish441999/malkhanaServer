@@ -29,9 +29,7 @@ const seizedCashSchema = new mongoose.Schema(
       type: String,
       enum: ["Cash", "Gold Metel", "Antiques Items"],
     },
-    trackingBy: {
-      type: String,
-    },
+   
   },
   { timestamps: true }
 );

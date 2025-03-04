@@ -31,7 +31,7 @@ const createSeizedCashMetel = asyncHandler(async (req, res) => {
       itemQty,
       expectedAmt,
       descriptions,
-      avatar: avatarURL, 
+      avatar: avatarURL.url, 
     });
   
     if (!seizedItem) {
