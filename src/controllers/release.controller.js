@@ -3,6 +3,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ReleaseEntry from "../models/release.model.js"; // Ensure correct model import
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import mongoose from "mongoose";
 
 const createReleaseEntry = asyncHandler(async (req, res) => {
   const {
@@ -46,7 +47,6 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
   }
 
   const documentLocalPath = req.files?.documentImage?.[0]?.path;
-  
 
   if (!documentLocalPath) {
     throw new ApiError(400, "Document file is required");
@@ -94,5 +94,14 @@ const deleteReleaseData = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
+const getReleaseEntryList = asyncHandler(async (req, res) => {
+  const releaseList = await ReleaseEntry.find({});
+  if (!releaseList) {
+    throw new ApiError(400, "Release List is not found");
+  }
+  res
+    .status(200)
+    .json(new ApiResponse(200, releaseList, "Get Release List Successfull"));
+});
 
-export { createReleaseEntry, deleteReleaseData };
+export { createReleaseEntry, deleteReleaseData, getReleaseEntryList };

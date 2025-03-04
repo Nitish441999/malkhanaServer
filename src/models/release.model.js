@@ -4,7 +4,18 @@ const releaseSchema = new mongoose.Schema(
   {
     entryType: {
       type: String,
-      enum: ["Type1", "Type2", "Type3"], // Define valid types
+      enum: [
+        "Malkhana Entry",
+        "FSL Entry",
+        "Kurki Entry",
+        "Other Entry",
+        "MVAct Seizure",
+        "ARTO Seizure",
+        "IPC Vehicle",
+        "Excise Vehicle",
+        "Unclaimed Vehicle",
+        "Seizure Vehicle",
+      ],
       required: true,
     },
     mudNo: {

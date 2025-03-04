@@ -4,6 +4,7 @@ import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
   createReleaseEntry,
   deleteReleaseData,
+  getReleaseEntryList,
 } from "../controllers/release.controller.js";
 
 const router = Router();
@@ -17,20 +18,21 @@ router.route("/").post(
   ]),
   createReleaseEntry
 );
+router.route("/").get(getReleaseEntryList);
 
-router.route("/:id").delete(deleteReleaseData);
+router.route("/id").delete(deleteReleaseData);
 
 // router
 //   .route("/:id")
 //   .get(getArtoSeizure)
-//   .patch(
-//     upload.fields([
-//       {
-//         name: "avatar",
-//         maxCount: 10,
-//       },
-//     ]),
-//     updateArtoSeizure
-//   );
+// .patch(
+//   upload.fields([
+//     {
+//       name: "avatar",
+//       maxCount: 10,
+//     },
+//   ]),
+//   updateArtoSeizure
+// );
 
 export default router;
