@@ -42,9 +42,7 @@ const moveMovementSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    trackingBy: {
-      type: String,
-    },
+   
   },
   { timestamps: true }
 );

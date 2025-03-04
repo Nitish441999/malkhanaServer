@@ -20,11 +20,7 @@ router.route("/").post(
 );
 router.route("/").get(getReleaseEntryList);
 
-router.route("/id").delete(deleteReleaseData);
-
-// router
-//   .route("/:id")
-//   .get(getArtoSeizure)
+router.route("/:id").delete(deleteReleaseData);
 // .patch(
 //   upload.fields([
 //     {
