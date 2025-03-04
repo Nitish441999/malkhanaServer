@@ -61,7 +61,7 @@ const createMove = asyncHandler(async (req, res) => {
     takenOutBy,
     trackingBy,
     description,
-    avatar: avatarURL,
+    avatar: avatarURL.url,
   });
 
   await EntryModel.findOneAndUpdate(
