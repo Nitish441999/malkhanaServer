@@ -216,7 +216,7 @@ const deleteSeizureVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, " ", "Data deleted successfully"));
+    .json(new ApiResponce(200, " ", "Data deleted successfully"));
 });
 export {
   seizureVehicleEntry,

@@ -27,7 +27,7 @@ router
   );
 
 router
-  .route("/c/:id")
+  .route("/:id")
   .get(getMvActSeizure)
   .put(
     upload.fields([

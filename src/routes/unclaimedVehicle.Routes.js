@@ -27,7 +27,7 @@ router
   );
 
 router
-  .route("/c/:id")
+  .route("/:id")
   .get(getUnclaimedVehicle)
   .put(
     upload.fields([

@@ -16,7 +16,9 @@ import seizureVehicleRouter from "./routes/seizureVehicle.Routes.js";
 import unclaimedVehicleRouter from "./routes/unclaimedVehicle.Routes.js";
 import SummonEntryRouter from "./routes/summonEntry.Routes.js";
 import fileEntryRouter from "./routes/fileEntry.Routes.js";
-import releaseRouter from "./routes/release.Routes.js"
+import releaseRouter from "./routes/release.Routes.js";
+import seizedRouter from "./routes/seizedItems.Routes.js";
+import moveRouter from "./routes/moveItem.Routes.js";
 dotenv.config();
 
 const app = express();
@@ -51,7 +53,9 @@ app.use("/api/v1/seizureVehicle", seizureVehicleRouter);
 app.use("/api/v1/unclaimedVehicle", unclaimedVehicleRouter);
 app.use("/api/v1/summon", SummonEntryRouter);
 app.use("/api/v1/fileEntry", fileEntryRouter);
-app.use ("/api/v1/release", releaseRouter)
+app.use("/api/v1/release", releaseRouter);
+app.use("/api/v1/seized", seizedRouter);
+app.use("/api/v1/move", moveRouter);
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });

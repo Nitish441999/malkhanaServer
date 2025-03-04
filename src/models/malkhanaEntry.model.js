@@ -82,6 +82,9 @@ const malkhanaEntrySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    trackingBy: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
