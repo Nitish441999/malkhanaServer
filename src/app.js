@@ -19,6 +19,7 @@ import fileEntryRouter from "./routes/fileEntry.Routes.js";
 import releaseRouter from "./routes/release.Routes.js";
 import seizedRouter from "./routes/seizedItems.Routes.js";
 import moveRouter from "./routes/moveItem.Routes.js";
+import returnRouter from "./routes/return.Router.js";
 dotenv.config();
 
 const app = express();
@@ -56,6 +57,7 @@ app.use("/api/v1/fileEntry", fileEntryRouter);
 app.use("/api/v1/release", releaseRouter);
 app.use("/api/v1/seized", seizedRouter);
 app.use("/api/v1/move", moveRouter);
+app.use("/api/v1/return", returnRouter);
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });

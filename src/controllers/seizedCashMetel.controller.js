@@ -75,7 +75,7 @@ const deleteSeizedItem = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponce(200, "Seized item deleted successfully"));
+    .json(new ApiResponce(200, " ","Seized item deleted successfully"));
 });
 
 export { createSeizedCashMetel, getSeizedItemList, deleteSeizedItem };
