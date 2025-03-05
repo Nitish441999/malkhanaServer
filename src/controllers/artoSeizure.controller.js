@@ -5,6 +5,7 @@ import ApiResponce from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
+import MovementModel from "../models/movement.model.js";
 
 const artoSeizureEntry = asyncHandler(async (req, res) => {
   const {
@@ -157,6 +158,10 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
   const releaseItem = await releaseModel.find({ mudNo: existingMudNo });
   if (releaseItem.length > 0) {
     throw new ApiError(400, "Modification is not allowed for released data");
+  }
+  const moveItem = await MovementModel.find({ mudNo: existingMudNo });
+  if (moveItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for Move data");
   }
 
   if (req.files?.avatar?.[0]?.path) {

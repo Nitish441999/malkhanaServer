@@ -133,6 +133,11 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
 
+  const moveItem = await MovementModel.find({ mudNo: existingMudNo });
+  if (moveItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for Move data");
+  }
+
   const requiredFields = [
     "firNo",
     "mudNo",

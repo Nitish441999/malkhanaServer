@@ -7,6 +7,7 @@ import {
   deleteMoveItem,
   getMoveItemList,
 } from "../controllers/moveMovement.controller.js";
+import { getAllCollectionsData } from "../controllers/AllCollectionData.controller.js";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.use(verifyJWT);
 
 router
   .route("/")
+  
   .get(getMoveItemList)
   .post(
     upload.fields([
@@ -30,5 +32,6 @@ router
   //   .get(getMalkhanaEntry)
   //   .patch(updateMalkhanaEntryDetails)
   .delete(deleteMoveItem);
+  router.route("/alldata").get(getAllCollectionsData)
 
 export default router;
