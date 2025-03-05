@@ -1,5 +1,4 @@
 import asyncHandler from "../utils/asyncHandler.js";
-
 import ApiError from "../utils/ApiError.js";
 import ApiResponce from "../utils/ApiResponse.js";
 import Malkhana_Entry from "../models/malkhanaEntry.model.js";
@@ -25,6 +24,28 @@ const createMove = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All required fields must be filled.");
   }
 
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar file is required");
+  }
+
+  const avatarUpload = await uploadOnCloudinary(avatarLocalPath);
+  if (!avatarUpload || !avatarUpload.secure_url) {
+    throw new ApiError(400, "Failed to upload avatar file");
+  }
+
+  
+  const newMoveEntry = await MovementModel.create({
+    entryType, 
+    firNo,
+    mudNo,
+    takenOutBy,
+    trackingBy,
+    description,
+    avatar: avatarUpload.secure_url,
+  });
+
+  
   const entryModels = {
     Malkhana_Entry,
     FSL_Entry,
@@ -39,31 +60,12 @@ const createMove = asyncHandler(async (req, res) => {
     Seizure_Vehicle,
   };
 
-  const EntryModel = entryModels[entryType];
-
+  const EntryModel = entryModels[entryType]; // ✅ Use `entryType` directly
   if (!EntryModel) {
     throw new ApiError(400, "Invalid entry type.");
   }
 
-  const avatarLocalPath = req.files?.avatar?.[0]?.path;
-  if (!avatarLocalPath) {
-    throw new ApiError(400, "Avatar file is required");
-  }
-
-  const avatarURL = await uploadOnCloudinary(avatarLocalPath);
-  if (!avatarURL) {
-    throw new ApiError(400, "Failed to upload avatar file");
-  }
-
-  const newMoveEntry = await MovementModel.create({
-    firNo,
-    mudNo,
-    takenOutBy,
-    trackingBy,
-    description,
-    avatar: avatarURL.url,
-  });
-
+  
   await EntryModel.findOneAndUpdate(
     { mudNo },
     { $set: { trackingBy: newMoveEntry.trackingBy } },
