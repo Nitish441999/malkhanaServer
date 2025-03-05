@@ -19,7 +19,7 @@ import fileEntryRouter from "./routes/fileEntry.Routes.js";
 import releaseRouter from "./routes/release.Routes.js";
 import seizedRouter from "./routes/seizedItems.Routes.js";
 import moveRouter from "./routes/moveItem.Routes.js";
-import returnRouter from "./routes/return.Router.js";
+import returnRouter from "./routes/return.Routes.js";
 dotenv.config();
 
 const app = express();

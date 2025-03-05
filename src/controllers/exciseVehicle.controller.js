@@ -143,7 +143,6 @@ const updateExciseVehicle = asyncHandler(async (req, res) => {
     actType,
     result,
     firNo,
-
     vivechak,
     banam,
   } = req.body;
@@ -177,6 +176,7 @@ const updateExciseVehicle = asyncHandler(async (req, res) => {
   if (releaseItem.length > 0) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
+  
 
   if (req.files?.avatar?.[0]?.path) {
     const avatarFile = req.files.avatar[0].path;

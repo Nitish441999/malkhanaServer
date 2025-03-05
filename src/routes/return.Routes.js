@@ -5,7 +5,7 @@ import {
   createReturn,
   deleteReturnItem,
   getReturnItemList,
-} from "../controllers/returnMovement.Controller.js";
+} from "../controllers/returnMovement.controller.js";
 
 const router = Router();
 
