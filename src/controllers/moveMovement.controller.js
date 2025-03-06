@@ -34,9 +34,8 @@ const createMove = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Failed to upload avatar file");
   }
 
-  
   const newMoveEntry = await MovementModel.create({
-    entryType, 
+    entryType,
     firNo,
     mudNo,
     takenOutBy,
@@ -45,7 +44,6 @@ const createMove = asyncHandler(async (req, res) => {
     avatar: avatarUpload.secure_url,
   });
 
-  
   const entryModels = {
     Malkhana_Entry,
     FSL_Entry,
@@ -60,12 +58,11 @@ const createMove = asyncHandler(async (req, res) => {
     Seizure_Vehicle,
   };
 
-  const EntryModel = entryModels[entryType]; // ✅ Use `entryType` directly
+  const EntryModel = entryModels[entryType];
   if (!EntryModel) {
     throw new ApiError(400, "Invalid entry type.");
   }
 
-  
   await EntryModel.findOneAndUpdate(
     { mudNo },
     { $set: { trackingBy: newMoveEntry.trackingBy } },
@@ -114,7 +111,5 @@ const deleteMoveItem = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponce(200, " ", "Move item deleted successfully"));
 });
-
-
 
 export { createMove, getMoveItemList, deleteMoveItem };
