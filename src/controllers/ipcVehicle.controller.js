@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import IpcVehicle from "../models/ipcVehicle.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
@@ -44,11 +44,15 @@ const ipcVehicleEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await IpcVehicle.findOne({ regNo });
+  const entryExists = await IpcVehicle.findOne({
+    regNo,
+    chassisNo,
+    engineNo,
+  });
   if (entryExists) {
     throw new ApiError(
       400,
-      "Entry with this registration number already exists"
+      "Entry with this registration, chassis, engine number already exists"
     );
   }
 
@@ -86,7 +90,7 @@ const ipcVehicleEntry = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponce(201, NewIpcVehicleEntry, "Ipc Vehicle Entry successful ")
+      new ApiResponse(201, NewIpcVehicleEntry, "Ipc Vehicle Entry successful ")
     );
 });
 
@@ -104,7 +108,7 @@ const getIpcVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, IpcVehicles, "Entry retrieved successfully"));
+    .json(new ApiResponse(200, IpcVehicles, "Entry retrieved successfully"));
 });
 
 const getIpcVehicleList = asyncHandler(async (req, res) => {
@@ -113,7 +117,7 @@ const getIpcVehicleList = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(200, IpcVehicleList, "Entries retrieved successfully")
+      new ApiResponse(200, IpcVehicleList, "Entries retrieved successfully")
     );
 });
 
@@ -202,7 +206,7 @@ const deleteIpcVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, " ", "Data deleted successfully"));
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
 export {
   ipcVehicleEntry,

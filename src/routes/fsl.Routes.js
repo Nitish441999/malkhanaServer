@@ -21,14 +21,21 @@ router
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     createFslEntry
-  )
-  
-  
+  );
 
-router.route("/:id").get(getFslEntry).put(updateFslEntryDetails).delete(deleteFslEntry);
+router
+  .route("/:id")
+  .get(getFslEntry)
+  .patch( upload.fields([
+    {
+      name: "avatar",
+      maxCount: 10,
+    },
+  ]),updateFslEntryDetails)
+  .delete(deleteFslEntry);
 
 export default router;

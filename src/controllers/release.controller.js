@@ -17,7 +17,7 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
     releaseItems,
   } = req.body;
 
-  // ✅ 1. Check if all required fields are provided
+ 
   if (
     !entryType ||
     !mudNo ||
@@ -74,7 +74,7 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(201, newEntry, "Entry created successfully"));
+    .json(new ApiResponse(201, newEntry, "Release Entry created successfully"));
 });
 const deleteReleaseData = asyncHandler(async (req, res) => {
   const { id } = req.params;

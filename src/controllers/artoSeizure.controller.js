@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import ArtoSeizure from "../models/artoSeizure.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
@@ -38,11 +38,15 @@ const artoSeizureEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await ArtoSeizure.findOne({ regNo });
+  const entryExists = await ExciseVehicle.findOne({
+    regNo,
+    chassisNo,
+    engineNo,
+  });
   if (entryExists) {
     throw new ApiError(
       400,
-      "Entry with this registration number already exists"
+      "Entry with this registration, chassis, engine number already exists"
     );
   }
 
@@ -77,7 +81,7 @@ const artoSeizureEntry = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         201,
         NewArtoSeizureEntry,
         "Aarto Seizure Entry successful "
@@ -99,7 +103,7 @@ const getArtoSeizure = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, getartoSeizure, "Entry retrieved successfully"));
+    .json(new ApiResponse(200, getartoSeizure, "Entry retrieved successfully"));
 });
 
 const getArtoSeizureList = asyncHandler(async (req, res) => {
@@ -108,7 +112,7 @@ const getArtoSeizureList = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(200, ArtoSeizureList, "Entries retrieved successfully")
+      new ApiResponse(200, ArtoSeizureList, "Entries retrieved successfully")
     );
 });
 
@@ -151,7 +155,7 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
 
   const existingEntry = await ArtoSeizure.findById(id);
   if (!existingEntry) {
-    throw new ApiError(404, "Entry not found");
+    throw new ApiError(404, "Data does not Exist");
   }
   const existingMudNo = existingEntry.mudNo;
 
@@ -183,7 +187,7 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
+    .json(new ApiResponse(200, updatedEntry, "Entry updated successfully"));
 });
 
 const deleteArtoSeizure = asyncHandler(async (req, res) => {
@@ -202,7 +206,7 @@ const deleteArtoSeizure = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, " ", "Data deleted successfully"));
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
 
 export {

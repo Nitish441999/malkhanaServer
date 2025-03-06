@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
+import MovementModel from "../models/movement.model.js";
 
 const createFslEntry = asyncHandler(async (req, res) => {
   const {
@@ -46,7 +47,7 @@ const createFslEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const existingEntry = await FslEntry.findOne({ firNo, mudNo });
+  const existingEntry = await FslEntry.findOne({ mudNo });
   if (existingEntry) {
     throw new ApiError(400, "fsl entry already exists");
   }
@@ -138,29 +139,58 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Modification is not allowed for Move data");
   }
 
-  const requiredFields = [
-    "firNo",
-    "mudNo",
-    "gdNo",
-    "ioName",
-    "banam",
-    "underSection",
-    "description",
-    "place",
-    "court",
-    "firYear",
-    "gdDate",
-    "DakhilKarneWala",
-    "caseProperty",
-    "actType",
-    "status",
-    "avtar",
-  ];
+  const {
+    firNo,
+    mudNo,
+    gdNo,
+    ioName,
+    banam,
+    underSection,
+    description,
+    place,
+    court,
+    firYear,
+    gdDate,
+    DakhilKarneWala,
+    caseProperty,
+    actType,
+    status,
+  } = req.body;
+  console.log(req.body);
 
-  for (const field of requiredFields) {
-    if (!req.body[field]) {
-      throw new ApiError(400, `Field '${field}' is required`);
+  const requiredFields = {
+    firNo,
+    mudNo,
+    gdNo,
+    ioName,
+    banam,
+    underSection,
+    description,
+    place,
+    court,
+    firYear, 
+    gdDate,
+    DakhilKarneWala,
+    caseProperty,
+    actType,
+    status,
+  };
+
+  for (const [key, value] of Object.entries(requiredFields)) {
+    if (!value || value === "") {
+      throw new ApiError(400, `Field '${key}' is required`);
     }
+  }
+
+  if (req.files?.avatar?.[0]?.path) {
+    const avatarFile = req.files.avatar[0].path;
+    const avatarUploadResult = await uploadOnCloudinary(avatarFile);
+
+    if (!avatarUploadResult?.url) {
+      throw new ApiError(500, "Failed to upload new avatar file");
+    }
+
+    req.body.avatar = avatarUploadResult.url;
   }
 
   const updatedFslEntry = await FslEntry.findByIdAndUpdate(

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import UnclaimedVehicle from "../models/unclaimedVehicle.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 
@@ -42,11 +42,15 @@ const unclaimedVehicleEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await UnclaimedVehicle.findOne({ regNo });
+  const entryExists = await UnclaimedVehicle.findOne({
+    regNo,
+    chassisNo,
+    engineNo,
+  });
   if (entryExists) {
     throw new ApiError(
       400,
-      "Entry with this registration number already exists"
+      "Entry with this registration, chassis, engine number already exists"
     );
   }
 
@@ -84,7 +88,7 @@ const unclaimedVehicleEntry = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         201,
         NewUnclaimedVehicleEntry,
         "Unclaimed Vehicle Entry successful "
@@ -107,7 +111,7 @@ const getUnclaimedVehicle = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(200, unclaimedVehicles, "Entry retrieved successfully")
+      new ApiResponse(200, unclaimedVehicles, "Entry retrieved successfully")
     );
 });
 
@@ -117,7 +121,7 @@ const getUnclaimedVehicleList = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         200,
         UnclaimedVehicleList,
         "Entries retrieved successfully"
@@ -191,7 +195,7 @@ const updateUnclaimedVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
+    .json(new ApiResponse(200, updatedEntry, "Entry updated successfully"));
 });
 
 const deleteUnclaimedVehicle = asyncHandler(async (req, res) => {
@@ -210,12 +214,12 @@ const deleteUnclaimedVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, " ", "Data deleted successfully"));
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
 export {
   unclaimedVehicleEntry,
   getUnclaimedVehicle,
   getUnclaimedVehicleList,
   updateUnclaimedVehicle,
-  deleteUnclaimedVehicle
+  deleteUnclaimedVehicle,
 };

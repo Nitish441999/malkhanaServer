@@ -1,6 +1,6 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import Malkhana_Entry from "../models/malkhanaEntry.model.js";
 import FSL_Entry from "../models/FslEntry.model.js";
 import Kurki_Entry from "../models/kurkiEntry.model.js";
@@ -71,7 +71,7 @@ const createMove = asyncHandler(async (req, res) => {
 
   res
     .status(201)
-    .json(new ApiResponce(201, newMoveEntry, "Entry created successfully"));
+    .json(new ApiResponse(201, newMoveEntry, "Entry created successfully"));
 });
 
 const getMoveItemList = asyncHandler(async (req, res) => {
@@ -80,13 +80,13 @@ const getMoveItemList = asyncHandler(async (req, res) => {
   if (moveItemList.length === 0) {
     return res
       .status(200)
-      .json(new ApiResponce(200, [], "No move list items found"));
+      .json(new ApiResponse(200, [], "No move list items found"));
   }
 
   res
     .status(200)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         200,
         moveItemList,
         "Move list items retrieved successfully"
@@ -109,7 +109,7 @@ const deleteMoveItem = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponce(200, " ", "Move item deleted successfully"));
+    .json(new ApiResponse(200, " ", "Move item deleted successfully"));
 });
 
 export { createMove, getMoveItemList, deleteMoveItem };

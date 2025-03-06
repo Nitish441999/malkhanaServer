@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import SeizureVehicle from "../models/seizureVehicle.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 
@@ -45,11 +45,15 @@ const seizureVehicleEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await SeizureVehicle.findOne({ regNo });
+  const entryExists = await SeizureVehicle.findOne({
+    regNo,
+    chassisNo,
+    engineNo,
+  });
   if (entryExists) {
     throw new ApiError(
       400,
-      "Entry with this registration number already exists"
+      "Entry with this registration, chassis, engine number already exists"
     );
   }
 
@@ -88,7 +92,7 @@ const seizureVehicleEntry = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         201,
         NewSeizureVehicleEntry,
         "seizure Vehicle Entry successful "
@@ -110,7 +114,7 @@ const getSeizureVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, seizureVehicle, "Entry retrieved successfully"));
+    .json(new ApiResponse(200, seizureVehicle, "Entry retrieved successfully"));
 });
 
 const getSeizureVehicleList = asyncHandler(async (req, res) => {
@@ -119,7 +123,7 @@ const getSeizureVehicleList = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(200, seizureVehicles, "Entries retrieved successfully")
+      new ApiResponse(200, seizureVehicles, "Entries retrieved successfully")
     );
 });
 
@@ -197,7 +201,7 @@ const updateSeizureVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
+    .json(new ApiResponse(200, updatedEntry, "Entry updated successfully"));
 });
 
 const deleteSeizureVehicle = asyncHandler(async (req, res) => {
@@ -216,12 +220,12 @@ const deleteSeizureVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, " ", "Data deleted successfully"));
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
 export {
   seizureVehicleEntry,
   getSeizureVehicle,
   getSeizureVehicleList,
   updateSeizureVehicle,
-  deleteSeizureVehicle
+  deleteSeizureVehicle,
 };

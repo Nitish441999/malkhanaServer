@@ -20,7 +20,7 @@ router
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     ipcVehicleEntry
@@ -29,11 +29,11 @@ router
 router
   .route("/:id")
   .get(getIpcVehicle)
-  .put(
+  .patch(
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     updateIpcVehicle

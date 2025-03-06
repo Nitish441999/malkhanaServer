@@ -20,7 +20,7 @@ router
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     createMalkhanaEntry
@@ -29,7 +29,12 @@ router
 router
   .route("/:id")
   .get(getMalkhanaEntry)
-  .patch(updateMalkhanaEntryDetails)
+  .patch( upload.fields([
+    {
+      name: "avatar",
+      maxCount: 10,
+    },
+  ]),updateMalkhanaEntryDetails)
   .delete(deleteMalkhanaEntry);
 
 export default router;

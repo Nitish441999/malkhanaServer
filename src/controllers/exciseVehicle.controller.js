@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import ExciseVehicle from "../models/exciseVehicle.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
@@ -46,11 +46,15 @@ const exciseVehicleEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await ExciseVehicle.findOne({ regNo });
+  const entryExists = await ExciseVehicle.findOne({
+    regNo,
+    chassisNo,
+    engineNo,
+  });
   if (entryExists) {
     throw new ApiError(
       400,
-      "Entry with this registration number already exists"
+      "Entry with this registration, chassis, engine number already exists"
     );
   }
 
@@ -89,7 +93,7 @@ const exciseVehicleEntry = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         201,
         NewExciseVehicleEntry,
         "Excise Seizure Entry successful "
@@ -111,7 +115,7 @@ const getExciseVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, exciseVehicles, "Entry retrieved successfully"));
+    .json(new ApiResponse(200, exciseVehicles, "Entry retrieved successfully"));
 });
 
 const getExciseVehicleList = asyncHandler(async (req, res) => {
@@ -120,7 +124,7 @@ const getExciseVehicleList = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(200, ExciseVehicleList, "Entries retrieved successfully")
+      new ApiResponse(200, ExciseVehicleList, "Entries retrieved successfully")
     );
 });
 
@@ -181,7 +185,6 @@ const updateExciseVehicle = asyncHandler(async (req, res) => {
   if (moveItem.length > 0) {
     throw new ApiError(400, "Modification is not allowed for Move data");
   }
-  
 
   if (req.files?.avatar?.[0]?.path) {
     const avatarFile = req.files.avatar[0].path;
@@ -202,7 +205,7 @@ const updateExciseVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
+    .json(new ApiResponse(200, updatedEntry, "Entry updated successfully"));
 });
 
 const deleteExciseVehicle = asyncHandler(async (req, res) => {
@@ -221,7 +224,7 @@ const deleteExciseVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, " ", "Data deleted successfully"));
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
 
 export {

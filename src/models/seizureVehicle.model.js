@@ -27,24 +27,24 @@ const seizureVehicleSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      trim: true,
+      
     },
     chassisNo: {
       type: String,
       required: true,
       unique: true,
-      trim: true,
+      
     },
     engineNo: {
       type: String,
       required: true,
       unique: true,
-      trim: true,
+     
     },
     colour: {
       type: String,
       required: true,
-      trim: true,
+     
     },
     gdDate: {
       type: String,
@@ -53,38 +53,38 @@ const seizureVehicleSchema = new mongoose.Schema(
     actType: {
       type: String,
       required: true,
-      trim: true,
+     
     },
     result: {
       type: String,
       required: true,
-      trim: true,
+      
     },
     avatar: {
       type: String,
       required: true,
-      trim: true,
+     
     },
     vivechak: {
       type: String,
       required: true,
-      unique: true,
-      trim: true,
+      
+    
     },
     firNo: {
       type: String,
       required: true,
-      trim: true,
+     
     },
     banam: {
       type: String,
       required: true,
-      trim: true,
+      
     },
     vehicleOwner: {
       type: String,
       required: true,
-      trim: true,
+      
     },
     trackingBy: {
       type: String,

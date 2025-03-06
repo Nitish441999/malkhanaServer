@@ -1,6 +1,6 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import Malkhana_Entry from "../models/malkhanaEntry.model.js";
 import FSL_Entry from "../models/FslEntry.model.js";
 import Kurki_Entry from "../models/kurkiEntry.model.js";
@@ -71,7 +71,7 @@ const createReturn = asyncHandler(async (req, res) => {
 
   res
     .status(201)
-    .json(new ApiResponce(201, createReturn, "Is Return created successfully"));
+    .json(new ApiResponse(201, createReturn, "Is Return created successfully"));
 });
 
 const getReturnItemList = asyncHandler(async (req, res) => {
@@ -80,13 +80,13 @@ const getReturnItemList = asyncHandler(async (req, res) => {
   if (returnItemList.length === 0) {
     return res
       .status(200)
-      .json(new ApiResponce(200, [], "No Return list items found"));
+      .json(new ApiResponse(200, [], "No Return list items found"));
   }
 
   res
     .status(200)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         200,
         returnItemList,
         "Return list items retrieved successfully"
@@ -109,6 +109,6 @@ const deleteReturnItem = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponce(200, " ", "Return item deleted successfully"));
+    .json(new ApiResponse(200, " ", "Return item deleted successfully"));
 });
 export { createReturn, getReturnItemList, deleteReturnItem };

@@ -21,7 +21,7 @@ router
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     createOthersEntry
@@ -30,7 +30,12 @@ router
 router
   .route("/:id")
   .get(getOthersEntry)
-  .put(updateOthersEntryDetails)
+  .patch( upload.fields([
+    {
+      name: "avatar",
+      maxCount: 10,
+    },
+  ]),updateOthersEntryDetails)
   .delete(deleteOtherEntry);
 
 export default router;

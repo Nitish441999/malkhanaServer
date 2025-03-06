@@ -21,7 +21,7 @@ router
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     createKurkiEntry
@@ -30,7 +30,12 @@ router
 router
   .route("/:id")
   .get(getKurkiEntry)
-  .put(updateKurkiEntryDetails)
+  .patch(  upload.fields([
+    {
+      name: "avatar",
+      maxCount: 10,
+    },
+  ]),updateKurkiEntryDetails)
   .delete(deleteKurkiEntry);
 
 export default router;

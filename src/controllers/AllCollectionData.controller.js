@@ -10,7 +10,7 @@ import Excise_Vehicle from "../models/exciseVehicle.model.js";
 import Unclaimed_Vehicle from "../models/unclaimedVehicle.model.js";
 import Seizure_Vehicle from "../models/seizureVehicle.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 
 const entryModels = {
   Malkhana_Entry,
@@ -35,7 +35,7 @@ const getAllCollectionsData = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         200,
         allCollectionData,
         "Fetched all collections successfully"

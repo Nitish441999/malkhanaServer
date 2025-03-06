@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import SeizedCashMetal from "../models/seizedCashYellowMetel.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 
@@ -17,15 +17,14 @@ const createSeizedCashMetel = asyncHandler(async (req, res) => {
     seizedItem,
   } = req.body;
 
-  let avatarURL = null;
-
-  if (req.files?.avatar?.[0]?.path) {
-    try {
-      avatarURL = await uploadOnCloudinary(req.files.avatar[0].path);
-    } catch (error) {
-      throw new ApiError(500, "Failed to upload image to Cloudinary.");
-    }
+  const existingEntry = await SeizedCashMetal.findOne({ mudNo });
+  if (!existingEntry) {
+    throw new ApiError(400, "Mud number does not exist");
   }
+
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
 
   const seizedItems = await SeizedCashMetal.create({
     firNo,
@@ -36,7 +35,7 @@ const createSeizedCashMetel = asyncHandler(async (req, res) => {
     expectedAmt,
     descriptions,
     seizedItem,
-    avatar: avatarURL.url,
+    avatar: avatar.url,
   });
 
   if (!seizedItems) {
@@ -45,7 +44,7 @@ const createSeizedCashMetel = asyncHandler(async (req, res) => {
 
   res
     .status(201)
-    .json(new ApiResponce(201, seizedItems, "Seized item added successfully"));
+    .json(new ApiResponse(201, seizedItems, "Seized item added successfully"));
 });
 
 const getSeizedItemList = asyncHandler(async (req, res) => {
@@ -56,7 +55,7 @@ const getSeizedItemList = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(
-      new ApiResponce(200, seizedItemList, " Get Seized item list successfull")
+      new ApiResponse(200, seizedItemList, " Get Seized item list successfull")
     );
 });
 
@@ -75,7 +74,7 @@ const deleteSeizedItem = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponce(200, " ","Seized item deleted successfully"));
+    .json(new ApiResponse(200, " ", "Seized item deleted successfully"));
 });
 
 export { createSeizedCashMetel, getSeizedItemList, deleteSeizedItem };

@@ -21,12 +21,17 @@ router
     upload.fields([
       {
         name: "avatar",
-        maxCount: 1,
+        maxCount: 10,
       },
     ]),
     createUnclaimedEntry
   );
 
-router.route("/:id").get(getUnclaimedEntry).put(updateUnclaimedEntryDetails).delete(deleteUnclaimedEntry);;
+router.route("/:id").get(getUnclaimedEntry).patch( upload.fields([
+  {
+    name: "avatar",
+    maxCount: 10,
+  },
+]),updateUnclaimedEntryDetails).delete(deleteUnclaimedEntry);;
 
 export default router;

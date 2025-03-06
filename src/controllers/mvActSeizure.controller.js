@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import MvActSeizure from "../models/mvActSeizure.model.js";
 import ApiError from "../utils/ApiError.js";
-import ApiResponce from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
@@ -37,11 +37,15 @@ const mvActSeizureEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await MvActSeizure.findOne({ regNo });
+  const entryExists = await MvActSeizure.findOne({
+    regNo,
+    chassisNo,
+    engineNo,
+  });
   if (entryExists) {
     throw new ApiError(
       400,
-      "Entry with this registration number already exists"
+      "Entry with this registration, chassis, engine number already exists"
     );
   }
 
@@ -76,7 +80,7 @@ const mvActSeizureEntry = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new ApiResponce(
+      new ApiResponse(
         201,
         NewMvActSeizureEntry,
         "M.V Act Seizure Entry successful "
@@ -98,7 +102,7 @@ const getMvActSeizure = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, getMvctAct, "Entry retrieved successfully"));
+    .json(new ApiResponse(200, getMvctAct, "Entry retrieved successfully"));
 });
 
 const getMvActSeizureList = asyncHandler(async (req, res) => {
@@ -107,7 +111,7 @@ const getMvActSeizureList = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponce(200, MvActSeizureList, "Entries retrieved successfully")
+      new ApiResponse(200, MvActSeizureList, "Entries retrieved successfully")
     );
 });
 
@@ -174,7 +178,7 @@ const updateMvActSeizure = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, updatedEntry, "Entry updated successfully"));
+    .json(new ApiResponse(200, updatedEntry, "Entry updated successfully"));
 });
 
 const deleteMvActSeizure = asyncHandler(async (req, res) => {
@@ -193,7 +197,7 @@ const deleteMvActSeizure = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponce(200, " ", "Data deleted successfully"));
+    .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
 
 export {
