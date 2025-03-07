@@ -177,11 +177,11 @@ const updateExciseVehicle = asyncHandler(async (req, res) => {
   }
   const existingMudNo = existingEntry.mudNo;
 
-  const releaseItem = await releaseModel.find({ mudNo: existingMudNo });
+  const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
   if (releaseItem.length > 0) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
-  const moveItem = await MovementModel.find({ mudNo: existingMudNo });
+  const moveItem = await MovementModel.findOne({ mudNo: existingMudNo });
   if (moveItem.length > 0) {
     throw new ApiError(400, "Modification is not allowed for Move data");
   }

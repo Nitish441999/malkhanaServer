@@ -147,34 +147,12 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
 
-  const moveItem = await movementModel.find({ mudNo: existingMudNo });
-    if (moveItem.length > 0) {
-      throw new ApiError(400, "Modification is not allowed for Move data");
-    }
-
-  const requiredFields = [
-    "firNo",
-    "mudNo",
-    "gdNo",
-    "ioName",
-    "banam",
-    "underSection",
-    "description",
-    "place",
-    "court",
-    "firYear",
-    "gdDate",
-    "DakhilKarneWala",
-    "caseProperty",
-    "actType",
-    "status",
-  ];
-
-  for (const field of requiredFields) {
-    if (!req.body[field]) {
-      throw new ApiError(400, `Field '${field}' is required`);
-    }
+  const moveItem = await movementModel.findOne({ mudNo: existingMudNo });
+  if (moveItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for Move data");
   }
+
+  const updateData = { ...req.body };
 
   if (req.files?.avatar?.[0]?.path) {
     const avatarFile = req.files.avatar[0].path;
@@ -184,12 +162,12 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Failed to upload new avatar file");
     }
 
-    req.body.avatar = avatarUploadResult.url;
+    updateData.avatar = avatarUploadResult.url; 
   }
 
   const malkhanaUpdateDetails = await MalkhanaEntry.findByIdAndUpdate(
     id,
-    { $set: { ...req.body, avatar } },
+    { $set: updateData }, 
     { new: true, runValidators: true }
   );
 

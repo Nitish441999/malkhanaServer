@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
+import movementModel from "../models/movement.model.js";
 
 const ipcVehicleEntry = asyncHandler(async (req, res) => {
   const {
@@ -140,7 +141,12 @@ const updateIpcVehicle = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
 
-  // ✅ Extract and validate required fields
+   const moveItem = await movementModel.findOne({ mudNo: existingMudNo });
+    if (moveItem.length > 0) {
+      throw new ApiError(400, "Modification is not allowed for Move data");
+    }
+
+  
   const requiredFields = [
     "mudNo",
     "gdNo",

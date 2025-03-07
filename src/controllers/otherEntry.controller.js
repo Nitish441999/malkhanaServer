@@ -129,7 +129,7 @@ const updateOthersEntryDetails = asyncHandler(async (req, res) => {
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
   }
-
+  const existingMudNo = existingEntry.mudNo;
   const releaseItem = await releaseModel.findOne({
     mudNo: existingEntry.mudNo,
   });
@@ -137,7 +137,7 @@ const updateOthersEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
 
-  const moveItem = await movementModel.find({ mudNo: existingMudNo });
+  const moveItem = await movementModel.findOne({ mudNo: existingMudNo });
     if (moveItem.length > 0) {
       throw new ApiError(400, "Modification is not allowed for Move data");
     }

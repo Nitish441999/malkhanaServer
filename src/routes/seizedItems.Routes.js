@@ -5,6 +5,7 @@ import {
   createSeizedCashMetel,
   deleteSeizedItem,
   getSeizedItemList,
+  updateSeizedItem,
 } from "../controllers/seizedCashMetel.controller.js";
 
 const router = Router();
@@ -26,15 +27,15 @@ router
 
 router
   .route("/:id")
-  //   .get(getArtoSeizure)
-  //   .patch(
-  //     upload.fields([
-  //       {
-  //         name: "avatar",
-  //         maxCount: 10,
-  //       },
-  //     ]),
-  //     updateArtoSeizure
-  //   )
+    
+    .patch(
+      upload.fields([
+        {
+          name: "avatar",
+          maxCount: 10,
+        },
+      ]),
+      updateSeizedItem
+    )
   .delete(deleteSeizedItem);
 export default router;
