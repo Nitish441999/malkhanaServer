@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import ArtoSeizure from "../models/artoSeizure.model.js";
-import ApiError from "../utils/ApiError.js";
+import ApiError from "../utils/ApiError.js"; 
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
-import releaseModel from "../models/release.model.js";
+import ReleaseModel from "../models/release.model.js";
 import MovementModel from "../models/movement.model.js";
 
 const artoSeizureEntry = asyncHandler(async (req, res) => {
@@ -38,7 +38,7 @@ const artoSeizureEntry = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const entryExists = await ExciseVehicle.findOne({
+  const entryExists = await ArtoSeizure.findOne({
     regNo,
     chassisNo,
     engineNo,
@@ -159,7 +159,7 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
   }
   const existingMudNo = existingEntry.mudNo;
 
-  const releaseItem = await releaseModel.find({ mudNo: existingMudNo });
+  const releaseItem = await ReleaseModel.find({ mudNo: existingMudNo });
   if (releaseItem.length > 0) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }

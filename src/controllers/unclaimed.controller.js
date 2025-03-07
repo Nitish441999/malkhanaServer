@@ -4,6 +4,8 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import releaseModel from "../models/release.model.js";
+import movementModel from "../models/movement.model.js";
 
 const createUnclaimedEntry = asyncHandler(async (req, res) => {
   const {
@@ -133,58 +135,66 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  const {
-    firNo,
-    mudNo,
-    gdNo,
-    ioName,
-    banam,
-    underSection,
-    description,
-    place,
-    court,
-    firYear,
-    gdDate,
-    DakhilKarneWala,
-    caseProperty,
-    actType,
-    status,
-    avtar,
-  } = req.body || {};
-
-  if (Object.values(req.body).some((value) => !value)) {
-    throw new ApiError(400, "All fields are required");
+  const existingEntry = await UnclaimedEntry.findById(id);
+  if (!existingEntry) {
+    throw new ApiError(404, "Entry not found");
   }
 
-  const unclaimedUpdateDetails = await UnclaimedEntry.findByIdAndUpdate(
+  const releaseItem = await releaseModel.findOne({
+    mudNo: existingEntry.mudNo,
+  });
+  if (releaseItem) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
+
+  const moveItem = await movementModel.find({ mudNo: existingMudNo });
+  if (moveItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for Move data");
+  }
+
+  const requiredFields = [
+    "firNo",
+    "mudNo",
+    "gdNo",
+    "ioName",
+    "banam",
+    "underSection",
+    "description",
+    "place",
+    "court",
+    "firYear",
+    "gdDate",
+    "DakhilKarneWala",
+    "caseProperty",
+    "actType",
+    "status",
+  ];
+
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      throw new ApiError(400, `Field '${field}' is required`);
+    }
+  }
+  if (req.files?.avatar?.[0]?.path) {
+    const avatarFile = req.files.avatar[0].path;
+    const avatarUploadResult = await uploadOnCloudinary(avatarFile);
+
+    if (!avatarUploadResult?.url) {
+      throw new ApiError(500, "Failed to upload new avatar file");
+    }
+
+    req.body.avatar = avatarUploadResult.url;
+  }
+
+  const updatedEntry = await OtherEntry.findByIdAndUpdate(
     id,
-    {
-      $set: {
-        firNo,
-        mudNo,
-        gdNo,
-        ioName,
-        banam,
-        underSection,
-        description,
-        place,
-        court,
-        firYear,
-        gdDate,
-        DakhilKarneWala,
-        caseProperty,
-        actType,
-        status,
-        avtar,
-      },
-    },
+    { $set: req.body },
     { new: true, runValidators: true }
   );
 
-  if (!unclaimedUpdateDetails) {
-    throw new ApiError(404, "unclaimed entry not found");
+  if (!updatedEntry) {
+    throw new ApiError(404, " unclaimed entry not found");
   }
-
   return res
     .status(200)
     .json(

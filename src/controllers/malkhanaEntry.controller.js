@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
+import movementModel from "../models/movement.model.js";
 
 const createMalkhanaEntry = asyncHandler(async (req, res) => {
   const {
@@ -146,6 +147,11 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
 
+  const moveItem = await movementModel.find({ mudNo: existingMudNo });
+    if (moveItem.length > 0) {
+      throw new ApiError(400, "Modification is not allowed for Move data");
+    }
+
   const requiredFields = [
     "firNo",
     "mudNo",
@@ -178,7 +184,7 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Failed to upload new avatar file");
     }
 
-    avatar = avatarUploadResult.url;
+    req.body.avatar = avatarUploadResult.url;
   }
 
   const malkhanaUpdateDetails = await MalkhanaEntry.findByIdAndUpdate(

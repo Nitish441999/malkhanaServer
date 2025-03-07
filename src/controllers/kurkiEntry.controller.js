@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import releaseModel from "../models/release.model.js";
+import movementModel from "../models/movement.model.js";
 
 const createKurkiEntry = asyncHandler(async (req, res) => {
   const {
@@ -124,24 +125,28 @@ const getAllKurkiEntry = asyncHandler(async (req, res) => {
 const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // ✅ Validate MongoDB ObjectId format
+  
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
 
-  // ✅ Check if the entry exists
   const existingEntry = await KurkiEntry.findById(id);
   if (!existingEntry) {
     throw new ApiError(404, "Entry not found");
   }
 
-  // ✅ Prevent modification if entry is released
+  
   const existingMudNo = existingEntry.mudNo;
   const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
 
   if (releaseItem) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
+
+  const moveItem = await movementModel.find({ mudNo: existingMudNo });
+    if (moveItem.length > 0) {
+      throw new ApiError(400, "Modification is not allowed for Move data");
+    }
 
   const requiredFields = [
     "firNo",
