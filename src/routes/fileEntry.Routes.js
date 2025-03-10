@@ -1,8 +1,8 @@
-import express from "express"; // ✅ Import express
+import express from "express"; 
 import { Router } from "express";
 import multer from "multer";
 import path from "path";
-import { fileURLToPath } from "url"; // Required for __dirname in ES Modules
+import { fileURLToPath } from "url";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
   deletefileEntry,
@@ -29,10 +29,9 @@ const storage = multer.diskStorage({
   },
 });
 
-
 const upload = multer({ storage: storage });
 
 router.post("/", upload.single("file"), uploadExcelFile);
-router.get("/:id", getFileEntryList)
+router.get("/", getFileEntryList);
 router.delete("/:id ", deletefileEntry);
 export default router;
