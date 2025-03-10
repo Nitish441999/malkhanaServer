@@ -1,4 +1,4 @@
-import express from "express"; 
+import express from "express";
 import { Router } from "express";
 import multer from "multer";
 import path from "path";
@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 
 const router = Router();
 
-router.use(express.static(path.resolve(__dirname, "../../public")));
+router.use(express.static(path.resolve(__dirname, "../../public/temp")));
 
 router.use(verifyJWT);
 

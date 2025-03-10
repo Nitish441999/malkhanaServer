@@ -6,7 +6,6 @@ dotenv.config({
   path: "./env",
 });
 
-// Connect to the database
 const startServer = async () => {
   try {
     await connectDB();
@@ -23,7 +22,7 @@ const startServer = async () => {
     });
   } catch (error) {
     console.error("Failed to start the server:", error.message);
-    process.exit(1); // Exit the process with failure code
+    process.exit(1);
   }
 };
 

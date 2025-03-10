@@ -40,7 +40,7 @@ const getFileEntryList = asyncHandler(async (req, res) => {
   }
   res
     .status(200)
-    .json(new ApiResponse(200, "Get list of file entry successfull"));
+    .json(new ApiResponse(200, fileEntryList, "Get list of file entry successfull"));
 });
 
 const deletefileEntry = asyncHandler(async (req, res) => {
