@@ -15,13 +15,13 @@ const __dirname = path.dirname(__filename);
 
 const router = Router();
 
-router.use(express.static(path.resolve(__dirname, "../../uploads/temp")));
+router.use(express.static(path.resolve(__dirname, "../../uploads")));
 
 router.use(verifyJWT);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../../uploads/temp");
+    const uploadPath = path.join(__dirname, "../../uploads");
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
