@@ -11,8 +11,6 @@ const uploadExcelFile = asyncHandler(async (req, res) => {
       throw new ApiError(400, "No file uploaded!");
     }
 
-    console.log("File uploaded at:", req.file.path);
-
     const workbook = xlsx.readFile(req.file.path);
     const sheetName = workbook.SheetNames[0];
     const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
@@ -40,7 +38,9 @@ const getFileEntryList = asyncHandler(async (req, res) => {
   }
   res
     .status(200)
-    .json(new ApiResponse(200, fileEntryList, "Get list of file entry successfull"));
+    .json(
+      new ApiResponse(200, fileEntryList, "Get list of file entry successfull")
+    );
 });
 
 const deletefileEntry = asyncHandler(async (req, res) => {

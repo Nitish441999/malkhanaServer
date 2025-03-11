@@ -28,7 +28,7 @@ app.use(
   cors({
     origin: [
       process.env.CORS_ORIGIN,
-      "https://malkhanaserver.onrender.com",
+      "https://beautiful-dasik-ad7383.netlify.app",
       "http://localhost:5173",
     ].filter(Boolean),
     credentials: true,

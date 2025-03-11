@@ -125,7 +125,6 @@ const getAllKurkiEntry = asyncHandler(async (req, res) => {
 const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid MongoDB ID format");
   }
@@ -135,7 +134,6 @@ const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Entry not found");
   }
 
-  
   const existingMudNo = existingEntry.mudNo;
   const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
 
@@ -144,9 +142,9 @@ const updateKurkiEntryDetails = asyncHandler(async (req, res) => {
   }
 
   const moveItem = await movementModel.findOne({ mudNo: existingMudNo });
-    if (moveItem.length > 0) {
-      throw new ApiError(400, "Modification is not allowed for Move data");
-    }
+  if (moveItem.length > 0) {
+    throw new ApiError(400, "Modification is not allowed for Move data");
+  }
 
   const requiredFields = [
     "firNo",
@@ -227,5 +225,5 @@ export {
   getKurkiEntry,
   getAllKurkiEntry,
   updateKurkiEntryDetails,
-  deleteKurkiEntry
+  deleteKurkiEntry,
 };
