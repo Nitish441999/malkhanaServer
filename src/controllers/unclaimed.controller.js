@@ -146,6 +146,7 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
   if (releaseItem) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
+console.log(existingEntry.mudNo);
 
   const moveItem = await movementModel.findOne({ mudNo: existingEntry.mudNo });
   if (moveItem) {
@@ -200,7 +201,7 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        unclaimedUpdateDetails,
+        updatedEntry,
         "unclaimed details updated successfully"
       )
     );

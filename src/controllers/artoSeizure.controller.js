@@ -160,7 +160,7 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
   const existingMudNo = existingEntry.mudNo;
 
   const releaseItem = await ReleaseModel.findOne({ mudNo: existingMudNo });
-  if (releaseItem.length > 0) {
+  if (releaseItem) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
   const moveItem = await MovementModel.findOne({ mudNo: existingMudNo });

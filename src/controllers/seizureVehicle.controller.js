@@ -180,7 +180,7 @@ const updateSeizureVehicle = asyncHandler(async (req, res) => {
   const existingMudNo = existingEntry.mudNo;
 
   const releaseItem = await releaseModel.findOne({ mudNo: existingMudNo });
-  if (releaseItem.length > 0) {
+  if (releaseItem) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
 

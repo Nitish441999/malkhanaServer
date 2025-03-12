@@ -20,9 +20,9 @@ const createSeizedCashMetel = asyncHandler(async (req, res) => {
   } = req.body;
 
   const existingEntry = await SeizedCashMetal.findOne({ mudNo });
-  if (!existingEntry) {
-    throw new ApiError(400, "Mud number does not exist");
-  }
+if (existingEntry) {
+  throw new ApiError(400, "Mud number already exists"); 
+}
 
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
 
