@@ -15,6 +15,8 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
     address,
     mobile,
     releaseItems,
+    avatar,
+    documentImage,
   } = req.body;
 
  
