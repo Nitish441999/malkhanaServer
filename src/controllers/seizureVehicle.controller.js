@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import movementModel from "../models/movement.model.js";
+import releaseModel from "../models/release.model.js";
 
 const seizureVehicleEntry = asyncHandler(async (req, res) => {
   const {
