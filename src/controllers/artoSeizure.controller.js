@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import ArtoSeizure from "../models/artoSeizure.model.js";
-import ApiError from "../utils/ApiError.js"; 
+import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
@@ -164,7 +164,7 @@ const updateArtoSeizure = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
   const moveItem = await MovementModel.findOne({ mudNo: existingMudNo });
-  if (moveItem.length > 0) {
+  if (moveItem) {
     throw new ApiError(400, "Modification is not allowed for Move data");
   }
 

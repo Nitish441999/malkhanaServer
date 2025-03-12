@@ -178,17 +178,17 @@ const updateUnclaimedVehicle = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Entry not found");
   }
 
-   const releaseItem = await releaseModel.findOne({
-      mudNo: existingEntry.mudNo,
-    });
-    if (releaseItem) {
-      throw new ApiError(400, "Modification is not allowed for released data");
-    }
-  
-    const moveItem = await movementModel.findOne({ mudNo: existingEntry.mudNo });
-    if (moveItem.length > 0) {
-      throw new ApiError(400, "Modification is not allowed for Move data");
-    }
+  const releaseItem = await releaseModel.findOne({
+    mudNo: existingEntry.mudNo,
+  });
+  if (releaseItem) {
+    throw new ApiError(400, "Modification is not allowed for released data");
+  }
+
+  const moveItem = await movementModel.findOne({ mudNo: existingEntry.mudNo });
+  if (moveItem) {
+    throw new ApiError(400, "Modification is not allowed for Move data");
+  }
 
   if (req.files?.avatar?.[0]?.path) {
     const avatarFile = req.files.avatar[0].path;

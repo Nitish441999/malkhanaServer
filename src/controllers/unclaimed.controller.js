@@ -148,7 +148,7 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
   }
 
   const moveItem = await movementModel.findOne({ mudNo: existingEntry.mudNo });
-  if (moveItem.length > 0) {
+  if (moveItem) {
     throw new ApiError(400, "Modification is not allowed for Move data");
   }
 
@@ -186,7 +186,7 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
     req.body.avatar = avatarUploadResult.url;
   }
 
-  const updatedEntry = await OtherEntry.findByIdAndUpdate(
+  const updatedEntry = await UnclaimedEntry.findByIdAndUpdate(
     id,
     { $set: req.body },
     { new: true, runValidators: true }

@@ -138,9 +138,9 @@ const updateOthersEntryDetails = asyncHandler(async (req, res) => {
   }
 
   const moveItem = await movementModel.findOne({ mudNo: existingMudNo });
-    if (moveItem.length > 0) {
-      throw new ApiError(400, "Modification is not allowed for Move data");
-    }
+  if (moveItem) {
+    throw new ApiError(400, "Modification is not allowed for Move data");
+  }
 
   const requiredFields = [
     "firNo",
@@ -217,5 +217,5 @@ export {
   getOthersEntry,
   getAllOthersEntry,
   updateOthersEntryDetails,
-  deleteOtherEntry
+  deleteOtherEntry,
 };

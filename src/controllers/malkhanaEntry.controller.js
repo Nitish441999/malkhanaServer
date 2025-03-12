@@ -148,7 +148,7 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
   }
 
   const moveItem = await movementModel.findOne({ mudNo: existingMudNo });
-  if (moveItem.length > 0) {
+  if (moveItem) {
     throw new ApiError(400, "Modification is not allowed for Move data");
   }
 
@@ -162,12 +162,12 @@ const updateMalkhanaEntryDetails = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Failed to upload new avatar file");
     }
 
-    updateData.avatar = avatarUploadResult.url; 
+    updateData.avatar = avatarUploadResult.url;
   }
 
   const malkhanaUpdateDetails = await MalkhanaEntry.findByIdAndUpdate(
     id,
-    { $set: updateData }, 
+    { $set: updateData },
     { new: true, runValidators: true }
   );
 

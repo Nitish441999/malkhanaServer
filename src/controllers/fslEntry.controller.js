@@ -135,7 +135,7 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
   }
 
   const moveItem = await MovementModel.findOne({ mudNo: existingMudNo });
-  if (moveItem.length > 0) {
+  if (moveItem) {
     throw new ApiError(400, "Modification is not allowed for Move data");
   }
 
@@ -168,7 +168,7 @@ const updateFslEntryDetails = asyncHandler(async (req, res) => {
     description,
     place,
     court,
-    firYear, 
+    firYear,
     gdDate,
     DakhilKarneWala,
     caseProperty,
