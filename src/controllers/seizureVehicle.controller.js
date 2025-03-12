@@ -152,6 +152,7 @@ const updateSeizureVehicle = asyncHandler(async (req, res) => {
     vehicleOwner,
     vivechak,
     banam,
+    avatar
   } = req.body;
 
   if (
