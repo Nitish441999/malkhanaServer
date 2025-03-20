@@ -84,6 +84,9 @@ const ipcVehicleSchema = new mongoose.Schema(
     trackingBy: {
       type: String,
     },
+    policeStation: {
+      type: String,
+    },
   },
   {
     timestamps: true,

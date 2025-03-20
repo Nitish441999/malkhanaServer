@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 
 const createSummonEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     entryType,
     firOrGdNumber,
@@ -53,6 +54,7 @@ const createSummonEntry = asyncHandler(async (req, res) => {
     actType,
     date,
     time,
+    policeStation: user.policeStation,
   });
 
   await newSummonEntry.save();

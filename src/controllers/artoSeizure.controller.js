@@ -8,6 +8,7 @@ import ReleaseModel from "../models/release.model.js";
 import MovementModel from "../models/movement.model.js";
 
 const artoSeizureEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     mudNo,
     gdNo,
@@ -73,6 +74,7 @@ const artoSeizureEntry = asyncHandler(async (req, res) => {
     actType,
     result,
     avatar: avatarURL.url,
+    policeStation: user.policeStation,
   });
 
   if (!NewArtoSeizureEntry) {

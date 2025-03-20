@@ -17,6 +17,7 @@ import { uploadOnCloudinary } from "../config/cloudinary.js";
 import mongoose from "mongoose";
 
 const createMove = asyncHandler(async (req, res) => {
+  const user = req.user
   const { entryType, firNo, mudNo, takenOutBy, trackingBy, description } =
     req.body;
 
@@ -42,6 +43,8 @@ const createMove = asyncHandler(async (req, res) => {
     trackingBy,
     description,
     avatar: avatarUpload.secure_url,
+    policeStation: user.policeStation,
+    
   });
 
   const entryModels = {

@@ -8,6 +8,7 @@ import releaseModel from "../models/release.model.js";
 import movementModel from "../models/movement.model.js";
 
 const unclaimedVehicleEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     mudNo,
     gdNo,
@@ -82,6 +83,7 @@ const unclaimedVehicleEntry = asyncHandler(async (req, res) => {
     vivechak,
     banam,
     avatar: avatarURL.url,
+    policeStation: user.policeStation,
   });
 
   if (!NewUnclaimedVehicleEntry) {

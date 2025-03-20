@@ -8,6 +8,7 @@ import movementModel from "../models/movement.model.js";
 import releaseModel from "../models/release.model.js";
 
 const seizureVehicleEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     mudNo,
     gdNo,
@@ -86,6 +87,7 @@ const seizureVehicleEntry = asyncHandler(async (req, res) => {
     vivechak,
     banam,
     avatar: avatarURL.url,
+    policeStation: user.policeStation,
   });
 
   if (!NewSeizureVehicleEntry) {

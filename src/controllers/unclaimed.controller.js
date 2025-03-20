@@ -8,6 +8,7 @@ import releaseModel from "../models/release.model.js";
 import movementModel from "../models/movement.model.js";
 
 const createUnclaimedEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     firNo,
     mudNo,
@@ -77,6 +78,7 @@ const createUnclaimedEntry = asyncHandler(async (req, res) => {
     actType,
     status,
     avatar: avatar.url,
+    policeStation: user.policeStation,
   });
 
   res
@@ -146,7 +148,7 @@ const updateUnclaimedEntryDetails = asyncHandler(async (req, res) => {
   if (releaseItem) {
     throw new ApiError(400, "Modification is not allowed for released data");
   }
-console.log(existingEntry.mudNo);
+  console.log(existingEntry.mudNo);
 
   const moveItem = await movementModel.findOne({ mudNo: existingEntry.mudNo });
   if (moveItem) {

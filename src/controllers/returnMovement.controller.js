@@ -17,6 +17,7 @@ import mongoose from "mongoose";
 import ReturnModel from "../models/return.Model.js";
 
 const createReturn = asyncHandler(async (req, res) => {
+  const user = req.user;
   const { entryType, firNo, mudNo, receivedBy, trackingBy, description } =
     req.body;
 
@@ -42,6 +43,7 @@ const createReturn = asyncHandler(async (req, res) => {
     trackingBy,
     description,
     avatar: avatarUpload.secure_url,
+    policeStation: user.policeStation,
   });
 
   const entryModels = {

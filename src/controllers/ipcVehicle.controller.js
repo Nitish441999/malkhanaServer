@@ -8,6 +8,7 @@ import releaseModel from "../models/release.model.js";
 import movementModel from "../models/movement.model.js";
 
 const ipcVehicleEntry = asyncHandler(async (req, res) => {
+  const user = req.user
   const {
     mudNo,
     gdNo,
@@ -83,6 +84,7 @@ const ipcVehicleEntry = asyncHandler(async (req, res) => {
     vehicleOwner,
     vivechak,
     avatar: avatarURL.url,
+    policeStation: user.policeStation,
   });
 
   if (!NewIpcVehicleEntry) {

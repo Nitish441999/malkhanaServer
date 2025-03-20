@@ -8,6 +8,7 @@ import releaseModel from "../models/release.model.js";
 import movementModel from "../models/movement.model.js";
 
 const createSeizedCashMetel = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     firNo,
     mudNo,
@@ -38,6 +39,7 @@ if (existingEntry) {
     descriptions,
     seizedItem,
     avatar: avatar.url,
+    policeStation: user.policeStation,
   });
 
   if (!seizedItems) {

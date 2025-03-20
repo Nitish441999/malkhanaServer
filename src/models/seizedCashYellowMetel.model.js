@@ -29,6 +29,9 @@ const seizedCashSchema = new mongoose.Schema(
       type: String,
       enum: ["Cash", "Gold Metal", "Antiques Items"],
     },
+    policeStation: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

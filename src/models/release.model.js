@@ -54,6 +54,9 @@ const releaseSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    policeStation: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

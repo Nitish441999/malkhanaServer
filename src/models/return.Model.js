@@ -42,6 +42,9 @@ const returnMovementSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    policeStation: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

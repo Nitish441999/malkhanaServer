@@ -6,6 +6,7 @@ import { uploadOnCloudinary } from "../config/cloudinary.js";
 import mongoose from "mongoose";
 
 const createReleaseEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     entryType,
     mudNo,
@@ -19,7 +20,6 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
     documentImage,
   } = req.body;
 
- 
   if (
     !entryType ||
     !mudNo ||
@@ -70,6 +70,7 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
     releaseItems,
     avatar: avatarUploadResponse.url,
     documentImage: documentUploadResponse.url,
+    policeStation: user.policeStation,
   });
 
   await newEntry.save();

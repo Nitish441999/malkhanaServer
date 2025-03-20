@@ -8,6 +8,7 @@ import releaseModel from "../models/release.model.js";
 import movementModel from "../models/movement.model.js";
 
 const createKurkiEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     firNo,
     mudNo,
@@ -77,6 +78,7 @@ const createKurkiEntry = asyncHandler(async (req, res) => {
     actType,
     status,
     avatar: avatar.url,
+    policeStation: user.policeStation,
   });
 
   res

@@ -85,6 +85,12 @@ const malkhanaEntrySchema = new mongoose.Schema(
     trackingBy: {
       type: String,
     },
+    policeStation: {
+      type: String,
+    },
+    policeStation: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

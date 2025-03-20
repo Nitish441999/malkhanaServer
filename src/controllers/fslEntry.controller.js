@@ -8,6 +8,7 @@ import releaseModel from "../models/release.model.js";
 import MovementModel from "../models/movement.model.js";
 
 const createFslEntry = asyncHandler(async (req, res) => {
+  const user = req.user;
   const {
     firNo,
     mudNo,
@@ -78,6 +79,7 @@ const createFslEntry = asyncHandler(async (req, res) => {
     actType,
     status,
     avatar: avatar.url,
+    policeStation: user.policeStation,
   });
 
   res
