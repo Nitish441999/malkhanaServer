@@ -39,7 +39,6 @@ const createUser = asyncHandler(async (req, res) => {
     !mobile ||
     !email ||
     !designation ||
-    !role ||
     !password ||
     !confirmPassword
   ) {
