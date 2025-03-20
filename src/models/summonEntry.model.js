@@ -64,6 +64,9 @@ const summonEntrySchema = new mongoose.Schema(
    policeStation: {
       type: String,
     },
+    district:{
+      type:String
+    },
   },
   { timestamps: true }
 );

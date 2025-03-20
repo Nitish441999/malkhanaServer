@@ -45,6 +45,9 @@ const returnMovementSchema = mongoose.Schema(
     policeStation: {
       type: String,
     },
+    district:{
+      type:String
+    },
   },
   { timestamps: true }
 );

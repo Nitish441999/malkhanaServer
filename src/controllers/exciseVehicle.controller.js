@@ -8,7 +8,7 @@ import releaseModel from "../models/release.model.js";
 import MovementModel from "../models/movement.model.js";
 
 const exciseVehicleEntry = asyncHandler(async (req, res) => {
-  const user = req.user
+  const user = req.user;
   const {
     mudNo,
     gdNo,
@@ -87,6 +87,7 @@ const exciseVehicleEntry = asyncHandler(async (req, res) => {
     banam,
     avatar: avatarURL.url,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   if (!NewExciseVehicleEntry) {

@@ -84,6 +84,7 @@ const unclaimedVehicleEntry = asyncHandler(async (req, res) => {
     banam,
     avatar: avatarURL.url,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   if (!NewUnclaimedVehicleEntry) {

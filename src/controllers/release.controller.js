@@ -71,6 +71,7 @@ const createReleaseEntry = asyncHandler(async (req, res) => {
     avatar: avatarUploadResponse.url,
     documentImage: documentUploadResponse.url,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   await newEntry.save();

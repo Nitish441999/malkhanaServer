@@ -55,6 +55,7 @@ const createSummonEntry = asyncHandler(async (req, res) => {
     date,
     time,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   await newSummonEntry.save();

@@ -75,6 +75,7 @@ const mvActSeizureEntry = asyncHandler(async (req, res) => {
     result,
     avatar: avatarURL.url,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   if (!NewMvActSeizureEntry) {

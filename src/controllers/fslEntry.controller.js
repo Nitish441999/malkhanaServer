@@ -80,6 +80,7 @@ const createFslEntry = asyncHandler(async (req, res) => {
     status,
     avatar: avatar.url,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   res

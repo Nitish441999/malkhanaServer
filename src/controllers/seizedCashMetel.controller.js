@@ -40,6 +40,7 @@ if (existingEntry) {
     seizedItem,
     avatar: avatar.url,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   if (!seizedItems) {

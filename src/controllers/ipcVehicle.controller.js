@@ -85,6 +85,7 @@ const ipcVehicleEntry = asyncHandler(async (req, res) => {
     vivechak,
     avatar: avatarURL.url,
     policeStation: user.policeStation,
+    district: user.district,
   });
 
   if (!NewIpcVehicleEntry) {

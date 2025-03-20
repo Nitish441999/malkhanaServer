@@ -83,6 +83,9 @@ const unclaimedVehicleSchema = new mongoose.Schema(
     policeStation: {
       type: String,
     },
+    district: {
+      type: String,
+    },
   },
   {
     timestamps: true,

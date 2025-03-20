@@ -3,6 +3,7 @@ import {
   changeCurrentPassword,
   createUser,
   deleteUser,
+  getAlluser,
   getCurrentUser,
   updateAccountDetails,
   userLogin,
@@ -24,6 +25,7 @@ router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 
 router.route("/update-user").patch(verifyJWT, updateAccountDetails);
+router.route("/allusers").get(verifyJWT, getAlluser);
 router.route("/:id").delete(verifyJWT, deleteUser);
 
 export default router;

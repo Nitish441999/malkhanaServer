@@ -31,6 +31,7 @@ const createUser = asyncHandler(async (req, res) => {
     role,
     password,
     confirmPassword,
+    district,
   } = req.body;
 
   if (
@@ -40,7 +41,8 @@ const createUser = asyncHandler(async (req, res) => {
     !email ||
     !designation ||
     !password ||
-    !confirmPassword
+    !confirmPassword ||
+    !district
   ) {
     throw new ApiError(400, "All fields are required");
   }
@@ -62,6 +64,7 @@ const createUser = asyncHandler(async (req, res) => {
     designation,
     role,
     password,
+    district
   });
 
   const createdUser = await User.findById(newUser._id).select(
@@ -71,6 +74,10 @@ const createUser = asyncHandler(async (req, res) => {
   res
     .status(201)
     .json(new ApiResponse(201, newUser, "User created successfully"));
+});
+const getAlluser = asyncHandler(async (req, res) => {
+  const allUser = await User.find({});
+  res.status(200).json(ApiResponse(200, allUser, "Get All user Successful "));
 });
 
 const userLogin = asyncHandler(async (req, res) => {
@@ -234,4 +241,5 @@ export {
   updateAccountDetails,
   getCurrentUser,
   deleteUser,
+  getAlluser,
 };

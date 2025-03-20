@@ -44,6 +44,7 @@ const createMove = asyncHandler(async (req, res) => {
     description,
     avatar: avatarUpload.secure_url,
     policeStation: user.policeStation,
+    district: user.district,
     
   });
 
