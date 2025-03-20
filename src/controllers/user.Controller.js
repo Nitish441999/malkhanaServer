@@ -64,7 +64,7 @@ const createUser = asyncHandler(async (req, res) => {
     designation,
     role,
     password,
-    district
+    district,
   });
 
   const createdUser = await User.findById(newUser._id).select(
@@ -77,7 +77,9 @@ const createUser = asyncHandler(async (req, res) => {
 });
 const getAlluser = asyncHandler(async (req, res) => {
   const allUser = await User.find({});
-  res.status(200).json(ApiResponse(200, allUser, "Get All user Successful "));
+  res
+    .status(200)
+    .json(new ApiResponse(200, allUser, "Get All user Successful "));
 });
 
 const userLogin = asyncHandler(async (req, res) => {
