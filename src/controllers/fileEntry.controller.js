@@ -6,50 +6,32 @@ import xlsx from "xlsx";
 import fs from "fs";
 
 const uploadExcelFile = asyncHandler(async (req, res) => {
-  try {
-    const user = req.user;
-
-    if (!req.file) {
-      throw new ApiError(400, "No file uploaded!");
-    }
-
-    console.log("Uploaded File Info:", req.file);
-
-    const filePath = req.file.path;
-    if (!fs.existsSync(filePath)) {
-      throw new ApiError(400, "File not found on server!");
-    }
-
-    const workbook = xlsx.readFile(filePath);
-    const sheetName = workbook.SheetNames[0];
-    const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
-    console.log("Extracted Data:", data);
-
-    if (!data.length) {
-      throw new ApiError(400, "Excel file is empty!");
-    }
-
-    const enrichedData = data.map((entry) => ({
-      policeStation: user.policeStation,
-      district: user.district,
-    }));
-
-    console.log("Data to Insert:", enrichedData);
-
-    await FileEntry.insertMany(enrichedData);
-
-    fs.unlinkSync(filePath);
-
-    res
-      .status(200)
-      .json(
-        new ApiResponse(200, enrichedData, "Excel file imported successfully!")
-      );
-  } catch (error) {
-    console.error("Error processing Excel file:", error);
-    throw new ApiError(500, "Error processing Excel file");
+  const user = req.user;
+  console.log(req.file);
+  if (!req.file) {
+    throw new ApiError(400, "No file uploaded!");
   }
+
+  const workbook = xlsx.readFile(req.file.path);
+  const sheetName = workbook.SheetNames[0];
+  const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+  if (!data) {
+    throw new ApiError(400, "Excel file is empty!");
+  }
+  const enrichedData = data.map((entry) => ({
+    ...entry,
+    policeStation: user.policeStation,
+    district: user.district,
+  }));
+
+  await FileEntry.insertMany(enrichedData);
+
+  fs.unlinkSync(req.file.path);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, data, "Excel file imported successfully!"));
 });
 
 const getFileEntryList = asyncHandler(async (req, res) => {
