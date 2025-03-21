@@ -3,6 +3,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
+import mongoose from "mongoose";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -57,14 +58,14 @@ const createUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User already exists");
   }
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
-    if (!avatarLocalPath) {
-      throw new ApiError(400, "Avatar file is required");
-    }
-  
-    const avatarUpload = await uploadOnCloudinary(avatarLocalPath);
-    if (!avatarUpload || !avatarUpload.secure_url) {
-      throw new ApiError(400, "Failed to upload avatar file");
-    }
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar file is required");
+  }
+
+  const avatarUpload = await uploadOnCloudinary(avatarLocalPath);
+  if (!avatarUpload || !avatarUpload.secure_url) {
+    throw new ApiError(400, "Failed to upload avatar file");
+  }
 
   const newUser = await User.create({
     fullName,
@@ -86,6 +87,7 @@ const createUser = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, newUser, "User created successfully"));
 });
+
 const getAlluser = asyncHandler(async (req, res) => {
   const allUser = await User.find({});
   res
