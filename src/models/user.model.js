@@ -20,7 +20,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      trim: true, // Removes leading & trailing spaces
     },
+
     designation: {
       type: String,
       required: true,
@@ -28,7 +30,6 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["Admin", "User"],
-     
     },
     district: {
       type: String,
@@ -36,6 +37,10 @@ const userSchema = new mongoose.Schema(
     },
 
     password: {
+      type: String,
+      required: true,
+    },
+    avatar: {
       type: String,
       required: true,
     },

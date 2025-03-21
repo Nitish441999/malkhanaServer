@@ -55,6 +55,15 @@ const createUser = asyncHandler(async (req, res) => {
   if (existingUser) {
     throw new ApiError(400, "User already exists");
   }
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+    if (!avatarLocalPath) {
+      throw new ApiError(400, "Avatar file is required");
+    }
+  
+    const avatarUpload = await uploadOnCloudinary(avatarLocalPath);
+    if (!avatarUpload || !avatarUpload.secure_url) {
+      throw new ApiError(400, "Failed to upload avatar file");
+    }
 
   const newUser = await User.create({
     fullName,
@@ -65,6 +74,7 @@ const createUser = asyncHandler(async (req, res) => {
     role,
     password,
     district,
+    avatar: avatarUpload.secure_url,
   });
 
   const createdUser = await User.findById(newUser._id).select(

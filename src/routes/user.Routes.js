@@ -10,9 +10,18 @@ import {
   userLogout,
 } from "../controllers/user.Controller.js";
 import verifyJWT from "../middlewares/auth.Middleware.js";
+import { upload } from "../middlewares/multer.middlewares.js";
 
 const router = Router();
-router.route("/ragister").post(createUser);
+router.route("/register").post(
+  upload.fields([
+    {
+      name: "avatar",
+      maxCount: 1,
+    },
+  ]),
+  createUser
+);
 
 router.route("/login").post(userLogin);
 

@@ -6,6 +6,7 @@ import xlsx from "xlsx";
 import fs from "fs";
 
 const uploadExcelFile = asyncHandler(async (req, res) => {
+  const user = req.user;
   try {
     if (!req.file) {
       throw new ApiError(400, "No file uploaded!");
@@ -15,11 +16,16 @@ const uploadExcelFile = asyncHandler(async (req, res) => {
     const sheetName = workbook.SheetNames[0];
     const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
-    if (!data || data.length === 0) {
+    if (!data) {
       throw new ApiError(400, "Excel file is empty!");
     }
+    const enrichedData = data.map((entry) => ({
+      ...entry,
+      policeStation: user.policeStation,
+      district: user.district,
+    }));
 
-    await FileEntry.insertMany(data);
+    await FileEntry.insertMany(enrichedData);
 
     fs.unlinkSync(req.file.path);
 

@@ -15,6 +15,12 @@ const fileEntrySchema = new mongoose.Schema(
     MudYear: String,
     CaseDecideYesNo: String,
     DateCaseDecide: String,
+    policeStation: {
+      type: String,
+    },
+    district: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
