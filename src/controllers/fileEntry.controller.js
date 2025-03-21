@@ -68,4 +68,21 @@ const deletefileEntry = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, " ", "Data deleted successfully"));
 });
 
-export { uploadExcelFile, getFileEntryList, deletefileEntry };
+const deleteAllFileEntries = asyncHandler(async (req, res) => {
+  const result = await FileEntry.deleteMany({});
+
+  if (result.deletedCount === 0) {
+    throw new ApiError(404, "No entries found to delete");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "All file entries deleted successfully"));
+});
+
+export {
+  uploadExcelFile,
+  getFileEntryList,
+  deletefileEntry,
+  deleteAllFileEntries,
+};
