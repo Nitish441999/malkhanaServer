@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import verifyJWT from "../middlewares/auth.Middleware.js";
 import {
+  deleteAllFileEntries,
   deletefileEntry,
   getFileEntryList,
   uploadExcelFile,
@@ -34,4 +35,5 @@ const upload = multer({ storage: storage });
 router.post("/", upload.single("file"), uploadExcelFile);
 router.get("/", getFileEntryList);
 router.delete("/:id ", deletefileEntry);
+router.delete("/", deleteAllFileEntries);
 export default router;

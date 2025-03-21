@@ -7,34 +7,31 @@ import fs from "fs";
 
 const uploadExcelFile = asyncHandler(async (req, res) => {
   const user = req.user;
-  try {
-    if (!req.file) {
-      throw new ApiError(400, "No file uploaded!");
-    }
-
-    const workbook = xlsx.readFile(req.file.path);
-    const sheetName = workbook.SheetNames[0];
-    const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
-    if (!data) {
-      throw new ApiError(400, "Excel file is empty!");
-    }
-    const enrichedData = data.map((entry) => ({
-      ...entry,
-      policeStation: user.policeStation,
-      district: user.district,
-    }));
-
-    await FileEntry.insertMany(enrichedData);
-
-    fs.unlinkSync(req.file.path);
-
-    res
-      .status(200)
-      .json(new ApiResponse(200, data, "Excel file imported successfully!"));
-  } catch (error) {
-    throw new ApiError(500, "Error processing Excel file");
+  console.log(req.file);
+  if (!req.file) {
+    throw new ApiError(400, "No file uploaded!");
   }
+
+  const workbook = xlsx.readFile(req.file.path);
+  const sheetName = workbook.SheetNames[0];
+  const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+  if (!data) {
+    throw new ApiError(400, "Excel file is empty!");
+  }
+  const enrichedData = data.map((entry) => ({
+    ...entry,
+    policeStation: user.policeStation,
+    district: user.district,
+  }));
+
+  await FileEntry.insertMany(enrichedData);
+
+  fs.unlinkSync(req.file.path);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, data, "Excel file imported successfully!"));
 });
 
 const getFileEntryList = asyncHandler(async (req, res) => {
