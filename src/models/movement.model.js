@@ -42,10 +42,12 @@ const moveMovementSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    district:{
-      type:String
+    policeStation: {
+      type: String,
     },
-   
+    district: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
