@@ -15,6 +15,7 @@ import Seizure_Vehicle from "../models/seizureVehicle.model.js";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import mongoose from "mongoose";
 import ReturnModel from "../models/return.Model.js";
+import movementModel from "../models/movement.model.js";
 
 const createReturn = asyncHandler(async (req, res) => {
   const user = req.user;
@@ -24,7 +25,10 @@ const createReturn = asyncHandler(async (req, res) => {
   if (!entryType || !firNo || !mudNo || !receivedBy || !trackingBy) {
     throw new ApiError(400, "All required fields must be filled.");
   }
-
+  const moveItem = await movementModel.find({ mudNo: mudNo });
+  if (!moveItem) {
+    throw new ApiError(401, "Mud Number is not Move data");
+  }
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is required");

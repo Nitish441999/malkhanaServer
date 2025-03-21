@@ -9,7 +9,7 @@ import movementModel from "../models/movement.model.js";
 
 const createMalkhanaEntry = asyncHandler(async (req, res) => {
   const user = req.user;
-
+ 
 
   const {
     firNo,
