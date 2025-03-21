@@ -26,11 +26,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      process.env.CORS_ORIGIN,
-      "https://beautiful-dasik-ad7383.netlify.app",
-      "http://localhost:5173",
-    ].filter(Boolean),
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
