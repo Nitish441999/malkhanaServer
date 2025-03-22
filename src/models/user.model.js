@@ -44,6 +44,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    pisNo: {
+      type: String,
+      required: true,
+    },
+    beltNo: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -34,6 +34,8 @@ const createUser = asyncHandler(async (req, res) => {
     password,
     confirmPassword,
     district,
+    pisNo,
+    beltNo,
   } = req.body;
 
   if (
@@ -44,7 +46,9 @@ const createUser = asyncHandler(async (req, res) => {
     !designation ||
     !password ||
     !confirmPassword ||
-    !district
+    !district ||
+    !pisNo ||
+    !beltNo
   ) {
     throw new ApiError(400, "All fields are required");
   }
@@ -77,6 +81,8 @@ const createUser = asyncHandler(async (req, res) => {
     password,
     district,
     avatar: avatarUpload.secure_url,
+    pisNo,
+    beltNo,
   });
 
   const createdUser = await User.findById(newUser._id).select(
@@ -196,7 +202,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
-  const { fullName, policeStation, mobile, email, designation, role } =
+  const { fullName, policeStation, mobile, designation, role, pisNo, beltNo } =
     req.body;
 
   if (
@@ -205,7 +211,9 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     !mobile ||
     !email ||
     !designation ||
-    !role
+    !role ||
+    !pisNo ||
+    !beltNo
   ) {
     throw new ApiError(400, "All fields are required");
   }
@@ -220,6 +228,8 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
         mobile,
         designation,
         role,
+        pisNo,
+        beltNo,
       },
     },
     { new: true }
